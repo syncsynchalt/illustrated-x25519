@@ -76,8 +76,8 @@ def point_mult(X: int, n: int) -> (int, int):
         D = x_3 - z_3
         DA = D * A
         CB = C * B
-        x_3 = (DA + CB)*(DA + CB)
-        z_3 = x_1 * (DA - CB)*(DA - CB)
+        x_3 = (DA + CB)*(DA + CB) % p
+        z_3 = x_1 * (DA - CB)*(DA - CB) % p
         x_2 = AA * BB % p
         z_2 = E * (AA + a24 * E) % p
     (x_2, x_3) = cswap(swap, x_2, x_3)
