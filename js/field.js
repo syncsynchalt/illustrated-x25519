@@ -18,10 +18,10 @@ let p = 2n ** 255n - 19n;
  * @param {BigInt} b
  * @returns {{gcd: BigInt, x: BigInt, y: BigInt}} containing GCD and x,y such that a*x + b*y == gcd
  */
-let extended_euclidean_algorithm = (a, b) => {
+function extended_euclidean_algorithm(a, b) {
     let s = 0n, old_s = 1n;
     let t = 1n, old_t = 0n;
-    let r = b , old_r = a;
+    let r = b, old_r = a;
     let tmp = undefined;
 
     while (r !== 0n) {
@@ -46,13 +46,12 @@ let extended_euclidean_algorithm = (a, b) => {
 
 
 /**
- * Square a number n.
  * @param {BigInt} n
- * @return {BigInt} (n * n) % p
+ * @return {BigInt}
  */
-let square = (n) => {
-    return reduce(n * n);
-};
+function square(n) {
+    return n * n;
+}
 
 
 /**
@@ -60,8 +59,8 @@ let square = (n) => {
  * @param {BigInt} n
  * @return {BigInt} result
  */
-let reduce = (n) => {
-    n = n % p;
+function reduce(n) {
+    n %= p;
     if (n < 0) {
         n += p;
     }
@@ -74,14 +73,14 @@ let reduce = (n) => {
  * @param {BigInt} n
  * @returns {BigInt} m such that (n * m) % p == 1.
  */
-let inverseOf = (n) => {
+function inverseOf(n) {
     if (n === 0n) {
         throw Error('Illegal argument zero');
     }
     // noinspection JSUnusedLocalSymbols
-    let { gcd, x, y } = extended_euclidean_algorithm(n, p);
+    let { _gcd, x, _y } = extended_euclidean_algorithm(n, p);
     return reduce(x);
-};
+}
 
 /**
  * Return the bignum as a hex string, padded with zeros.
@@ -89,7 +88,7 @@ let inverseOf = (n) => {
  * @param {Number=} bits number of bits output to zero-pad to (rounded up to 8-boundary)
  * @return {string}
  */
-let toHex = (a, bits) => {
+function toHex(a, bits) {
     bits = Number(bits || 0);
     let nibbles = 2 * Math.floor((bits+7)/8);
     let result = a.toString(16);
@@ -97,14 +96,14 @@ let toHex = (a, bits) => {
         result = '0'.repeat(nibbles-result.length) + result;
     }
     return result;
-};
+}
 
 /**
  * Given a hex string reverse its endianness, e.g. "abcdef" => "efcdab"
  * @param s {String} hex string
  * @return {String} flipped result
  */
-let hexFlipEndian = (s) => {
+function hexFlipEndian(s) {
     return s.match(/../g).reverse().join('');
 }
 

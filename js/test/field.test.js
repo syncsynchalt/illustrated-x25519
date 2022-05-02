@@ -37,7 +37,7 @@ describe('field math library', () => {
             if (known !== undefined) {
                 expect(result).to.equal(known, `inverseOf(${n})`);
             }
-        }
+        };
         chk(1n, 1n);
         chk(2n, field.p / 2n + 1n);
         chk(field.p / 2n + 1n, 2n);

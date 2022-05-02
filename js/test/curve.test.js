@@ -6,7 +6,7 @@ let expect = chai.expect;
 
 describe('curve library', () => {
 
-    it ('should match openssl "zero key" result', () => {
+    it('should match openssl "zero key" result', () => {
         let x = curve.basePointX;
         let z = 1n;
         const openssl_out = '2fe57da347cd62431528daac5fbb290730fff684afc4cfc2ed90995f58cb3b74';
@@ -20,7 +20,7 @@ describe('curve library', () => {
                 let iPad = (`000${i}`.slice(-3));
                 console.log(`{2^${iPad}}P X=${field.toHex(X, 256)}`);
             }
-        }
+        };
 
         for (i = 0; i < 254; i++) {
             printX();
@@ -44,8 +44,8 @@ describe('curve library', () => {
         if (n === 1) return { x: prev_x, z: prev_z };
 
         let next_x = 0n, next_z = 0n;
-        for (let i = 0; i < n-2; i++) {
-            ({x: next_x, z: next_z} = curve.pointAdd1(x, z, prev_x, prev_z));
+        for (let i = 0; i < n - 2; i++) {
+            ({ x: next_x, z: next_z } = curve.pointAdd1(x, z, prev_x, prev_z));
             [prev_x, prev_z] = [x, z];
             [x, z] = [next_x, next_z];
         }
@@ -54,7 +54,7 @@ describe('curve library', () => {
 
     it('can match add1 to result via doubling', () => {
         for (let exp = 0; exp < 10; exp++) {
-            let n = 2**exp;
+            let n = 2 ** exp;
             let nPad = `000${n}`.slice(-3);
 
             // get {2^exp}P via doubling
@@ -67,8 +67,8 @@ describe('curve library', () => {
 
             // get {2^exp}P via add1
             ({x, z} = calcViaAdd1(curve.basePointX, n));
-            let viaAdd1 = curve.X(x, z)
-            console.log(`${nPad}P via +1 is ${field.toHex(viaAdd1, 256)}`)
+            let viaAdd1 = curve.X(x, z);
+            console.log(`${nPad}P via +1 is ${field.toHex(viaAdd1, 256)}`);
 
             // compare them
             expect(field.toHex(viaDoubling, 256))
@@ -101,9 +101,9 @@ describe('curve library', () => {
             }
             let expX = curve.X(x, z);
             ({x, z} = curve.pointMult(curve.basePointX, 2n ** BigInt(exp)));
-            let chkX = curve.X(x, z)
+            let chkX = curve.X(x, z);
             expect(chkX).to.equal(expX, msg);
-        }
+        };
         for (let exp = 0; exp < 100; exp++) {
             runTest(exp, `${2**exp}P`);
         }

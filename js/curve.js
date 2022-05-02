@@ -11,7 +11,7 @@
  * Base point of this curve has X = 9.
  */
 
-import * as field from './field.js'
+import * as field from './field.js';
 
 const curveA = 486662n;
 const basePointX = 9n;
@@ -22,11 +22,11 @@ const basePointX = 9n;
  * @param {BigInt} z
  * @return {BigInt} X = x/z
  */
-let X = (x, z) => {
+function X(x, z) {
     return field.reduce(x * field.inverseOf(z));
 }
 
-const doubleA24 = (curveA+2n)/4n;
+const doubleA24 = (curveA + 2n) / 4n;
 /**
  * Double the point P at X=x/z
  *
@@ -37,7 +37,7 @@ const doubleA24 = (curveA+2n)/4n;
  * @param z {BigInt} from intermediate ratio form of X=x/z for point P
  * @return {{x: BigInt, z: BigInt}} x/z for point 2P
  */
-let pointDouble = (x, z) => {
+function pointDouble(x, z) {
     let x2_1 = (x + z) * (x + z);
     let x2_2 = (x - z) * (x - z);
     let x2 = field.reduce(x2_1 * x2_2);
@@ -61,18 +61,18 @@ let pointDouble = (x, z) => {
  * @param prevZ {BigInt} X coordinate of point n-1, in intermediate x/z form.
  * @returns {{x: BigInt, z: BigInt}} the X coordinate of point n+1, in intermediate x/z form.
  */
-let pointAdd1 = (x, z, prevX, prevZ) => {
+function pointAdd1(x, z, prevX, prevZ) {
     let [ baseX, baseZ ] = [ basePointX, 1n ];
-    let xa = field.reduce(x - z) * (baseX + baseZ);
-    let xb = field.reduce((x + z) * (baseX - baseZ));
-    let xc = field.reduce(field.square(xa + xb));
+    let xa = (x - z) * (baseX + baseZ);
+    let xb = (x + z) * (baseX - baseZ);
+    let xc = field.square(xa + xb);
     let x_nplus1 = prevZ * xc;
 
-    let zc = field.reduce(field.square(xa - xb));
+    let zc = field.square(xa - xb);
     let z_nplus1 = prevX * zc;
 
     return { x: field.reduce(x_nplus1), z: field.reduce(z_nplus1) };
-};
+}
 
 
 /**
@@ -86,9 +86,8 @@ let pointAdd1 = (x, z, prevX, prevZ) => {
  * @returns [BigInt, BigInt] the values a and b, swapped if needed.
  */
 let cswap = (swap, a, b) => {
-    return swap ? [b, a] : [a, b]
-}
-
+    return swap ? [b, a] : [a, b];
+};
 
 const multA24 = (curveA - 2n) / 4n;
 /**
@@ -101,7 +100,7 @@ const multA24 = (curveA - 2n) / 4n;
  * @param n {BigInt} multiplicand
  * @return {{x: BigInt, z: BigInt}} X-Coordinate for point nP in x/z intermediate form
  */
-let pointMult = (X, n) => {
+function pointMult(X, n) {
     let x_1 = X;
     let x_2 = 1n;
     let z_2 = 0n;
@@ -116,10 +115,10 @@ let pointMult = (X, n) => {
         [z_2, z_3] = cswap(!!swap, z_2, z_3);
         swap = k_t !== 0n ? 1 : 0;
 
-        let A = x_2 + z_2
-        let AA = A * A;
-        let B = x_2 - z_2
-        let BB = B * B;
+        let A = x_2 + z_2;
+        let AA = field.square(A);
+        let B = x_2 - z_2;
+        let BB = field.square(B);
         let E = AA - BB;
         let C = x_3 + z_3;
         let D = x_3 - z_3;
@@ -130,11 +129,11 @@ let pointMult = (X, n) => {
         x_2 = field.reduce(AA * BB);
         z_2 = field.reduce(E * (AA + multA24 * E));
     }
-    let rest;
-    [x_2, ...rest] = cswap(!!swap, x_2, x_3);
-    [z_2, ...rest] = cswap(!!swap, z_2, z_3);
+    let _rest;
+    [x_2, ..._rest] = cswap(!!swap, x_2, x_3);
+    [z_2, ..._rest] = cswap(!!swap, z_2, z_3);
     return { x: x_2, z: z_2 };
-};
+}
 
 
 export {
@@ -143,4 +142,4 @@ export {
     pointDouble,
     pointAdd1,
     pointMult
-}
+};
