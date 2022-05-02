@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>The Illustrated X25519 Key Exchange</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="title" content="The Illustrated X25519 Key Exchange"/>
+    <meta name="description" content="An explanation and demonstration of Curve25519 Key Exchange"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="x25519.css"/>
+    <script type="module" async src="site.js"></script>
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://x25519.ulfheim.net/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Illustrated X25519 Key Exchange">
+    <meta property="og:description" content="An explanation and demonstration of Curve25519 Key Exchange">
+    <meta property="og:image" content="https://x25519.ulfheim.net/images/og.png">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="x25519.ulfheim.net">
+    <meta property="twitter:url" content="https://x25519.ulfheim.net/">
+    <meta name="twitter:title" content="The Illustrated X25519 Key Exchange">
+    <meta name="twitter:description" content="An explanation and demonstration of Curve25519 Key Exchange">
+    <meta name="twitter:image" content="https://x25519.ulfheim.net/images/og.png">
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+<div class="header">
+<a href="https://quic.ulfheim.net">QUIC</a>
+<a class="this-page" href="https://x25519.ulfheim.net">X25519</a>
+<a href="https://tls13.ulfheim.net">TLS 1.3</a>
+<a href="https://tls12.ulfheim.net">TLS 1.2</a>
+</div>
+<div class="container">
+<h1>X25519 Key Exchange</h1>
+<h3>Overview</h3>
+<p>Key exchange is a mechanism where two parties can agree on the same number
+    without an eavesdropper being able to tell what that number is. X25519 is
+    the name of one method of key exchange, using the Curve25519 elliptical
+    curve.</p>
+
+<p>This method of key exchange works by defining a field of numbers (in this
+    case the numbers <span class="math">0</span> through
+    <span class="math">2<sup>255</sup>-19</span>
+    and then
+    defining some operations on that field so that the following relationship
+    is true:
+    <span class="centered tt">k<sub>b</sub>*(k<sub>a</sub>*P)
+        = k<sub>a</sub>*(k<sub>b</sub>*P)</span>
+</p>
+
+<p>Note that the above is not using simple multiplication.
+    It does have properties <i>similar</i> to multiplication, as we'll explain
+    below.</p>
+
+<p>Let's give the above terms some better names:
+<ul>
+    <li><span class="math">k<sub>a</sub></span> - Alice's private (secret)
+        key - a 256-bit (32-byte) random number</li>
+    <li><span class="math">k<sub>b</sub></span> - Bob's private (secret) key
+        - a 256-bit (32-byte) random number</li>
+    <li><span class="math">P</span> - a point on the curve,
+        where <span class="math">x = 9</span></li>
+    <li><span class="math">k<sub>a</sub>*P</span> - Alice's public key</li>
+    <li><span class="math">k<sub>b</sub>*P</span> - Bob's public key</li>
+</ul>
+<p>Let's also define our elliptic curve, which is:
+    <span class="math">y<sup>2</sup> = x<sup>3</sup> + 486662x<sup>2</sup> + x</span>
+</p>
+
+<h3>Math on the curve</h3>
+<p>The most straightforward explanation for elliptical curve math I've found
+    is Andrea Corbellini's <a
+            href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/"
+    >Elliptical Curve Cryptography: a gentle introduction</a>. There is one
+    difference in that Curve25519 is not a Weierstrass curve, but is instead
+    a Montgomery curve, so you won't be able to plug values from this page
+    into the tools on their page.
+
+<p>The takeaways from that site are:
+<ul>
+    <li>Point operations (done on <em>points</em>):
+        <ul>
+            <li><em>Adding</em> two points on a curve gives a third point,
+                found by a geometric relationship between points on the curve.
+            <li>Repeated additions of points on a curve gives us <em>scalar
+            multiplication</em>:
+            <br><span class="math">2*P = P+P</span>
+            <br><span class="math">3*P = P+P+P</span>
+            <br>... etc.</li>
+        </ul>
+    <li>Modular arithmetic (done on <em>numbers</em> in our curve equations):
+    <ul>
+        <li>Adding, subtracting, and multiplying numbers will
+            "wrap" around at <span class="math">p=2<sup>255</sup>-19</span>.
+        <li>Division is replaced
+        with multiplicative inverses: instead of dividing by <span class="math">x</span>
+        we find the number <span class="math">x<sup>-1</sup></span>
+        that satisfies the relationship <span class="math">x*x<sup>-1</sup>=1</span>
+        in our prime field, and multiply by that.
+    </li>
+    </ul>
+</ul>
+
+<h3>Hands on</h3>
+<p>Let's play with some actual numbers</p>
+
+<form class="form" id="form-pubkey">
+    <div class="form-group">
+    <label for="pubkey-privkey">secret key:</label>
+    <input class="form-n long right" id="pubkey-privkey" type="text"
+           data-chars="0-9a-fA-F" placeholder="secret key" value="1">
+    <button type="button" id="pubkey-plus-one">+1</button>
+    <button type="button" id="pubkey-double">Double</button>
+    </div>
+    <div class="form-group">
+    <span id="pubkey-explainer">Adding the base point x=9 to itself
+        <span id="pubkey-explainer-num">1</span>
+        times gives us a new<span class="math">x</span> coordinate,
+        which is our</span><br>
+    <label for="pubkey-result">public key:</label>
+    <span id="pubkey-result" class="math"></span>
+    </div>
+</form>
+
+<p>Let's perform a simple key exchange. Give Alice a secret key, such as "7".
+    Use the calculator above to find Alice's public key. Give Bob a different
+    secret key, such as "5". Use the calculator to find Bob's public key.
+</p>
+
+<p>Now let's be Alice. Put Bob's public key into the calculator below,
+    and multiply it by Alice's secret key. Note the result.</p>
+<p>Let's switch over to Bob. Pub Alice's public key into the calculator, and
+    multiply it by Bob's public key. The result should match! This is the
+    shared secret which Alice and Bob have exchanged, by giving each other
+    their public keys.</p>
+<p>Since the eavesdropper can't see either of Alice or
+    Bob's secret keys, they can't compute the same result except by guessing
+    one of the secret keys. Since secret keys are 256 bits of random data,
+    they're not likely to succeed.
+</p>
+
+<h3>Questions</h3>
+<p>
+Q - why can't reproduce openssl
+A - endian and key bits
+
+Q - why no Y numbers
+A - "compressed" points, only X given, all math is done without regards to Y
+
+Q - how to reproduce
+A - see wikipedia page on Montgomery curve for doubling X values, see wikipedia
+page on
+https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication and/or RFC
+7748 for information on implementations.
+</p>
+</div>
+</body>
+</html>

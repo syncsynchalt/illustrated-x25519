@@ -1,0 +1,43 @@
+.math {
+    font-family: "Courier", monospace;
+    font-style: oblique;
+}
+.centered {
+    text-align: center;
+}
+input.long {
+    width: 32em;
+}
+input.right {
+    text-align: right;
+}
+.hidden {
+    visibility: hidden;
+}
+
+/***** header ******/
+
+.header {
+    width: 100%;
+    margin: 0;
+    padding: 2px;
+    border-bottom: 1px solid grey;
+    background-color: #FFEFD5;
+    color: #555;
+    font-size: 0.9em;
+    text-align: right;
+}
+.header a, .header a:visited, .header a:hover {
+    text-decoration: none;
+    color: #555;
+}
+.header a.this-page:before {
+    content: "❧\00a0";
+    /* content: "•\00a0"; */
+}
+.header a, .header span {
+    margin-right: 0.5em;
+}
+.header a.this-page {
+    font-weight: bold;
+}
