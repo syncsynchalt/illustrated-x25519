@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>The Illustrated X25519 Key Exchange</title>
+    <title>X25519 Key Exchange: A Digression</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="format-detection" content="telephone=no"/>
@@ -49,10 +49,14 @@
 </div>
 <div class="container">
 <h1>X25519 Key Exchange</h1>
+<h4>Let's go hands-on and learn how to exchange secrets in a secure
+    conversation.</h4>
+
+<div class="section">
 <h3>Overview</h3>
 <p>Key exchange is a mechanism where two parties can agree on the same number
-    without an eavesdropper being able to tell what that number is. X25519 is
-    the name of one method of key exchange, using the Curve25519 elliptical
+    without an eavesdropper being able to tell what it is. X25519 is
+    the name of one method of key exchange, using the Curve25519 elliptic
     curve.</p>
 
 <p>This method of key exchange works by defining a field of numbers (in this
@@ -83,79 +87,142 @@
 <p>Let's also define our elliptic curve, which is:
     <span class="math">y<sup>2</sup> = x<sup>3</sup> + 486662x<sup>2</sup> + x</span>
 </p>
+</div>
 
+<div class="section">
 <h3>Math on the curve</h3>
-<p>The most straightforward explanation for elliptical curve math I've found
+<p>The most straightforward explanation for elliptic curve math I've found
     is Andrea Corbellini's <a
             href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/"
-    >Elliptical Curve Cryptography: a gentle introduction</a>. There is one
-    difference in that Curve25519 is not a Weierstrass curve, but is instead
-    a Montgomery curve, so you won't be able to plug values from this page
-    into the tools on their page.
+    >Elliptic Curve Cryptography: a gentle introduction</a>. Those pages
+    describe a slightly different curve type, but the lessons in it apply.
 
 <p>The takeaways from that site are:
+<p>Point operations (done on <em>points</em>):
 <ul>
-    <li>Point operations (done on <em>points</em>):
-        <ul>
-            <li><em>Adding</em> two points on a curve gives a third point,
-                found by a geometric relationship between points on the curve.
-            <li>Repeated additions of points on a curve gives us <em>scalar
-            multiplication</em>:
-            <br><span class="math">2*P = P+P</span>
-            <br><span class="math">3*P = P+P+P</span>
-            <br>... etc.</li>
-        </ul>
-    <li>Modular arithmetic (done on <em>numbers</em> in our curve equations):
-    <ul>
-        <li>Adding, subtracting, and multiplying numbers will
-            "wrap" around at <span class="math">p=2<sup>255</sup>-19</span>.
-        <li>Division is replaced
-        with multiplicative inverses: instead of dividing by <span class="math">x</span>
-        we find the number <span class="math">x<sup>-1</sup></span>
-        that satisfies the relationship <span class="math">x*x<sup>-1</sup>=1</span>
-        in our prime field, and multiply by that.
+    <li><em>Adding</em> two points on a curve gives a third point
+    <li>Repeated additions of points on a curve gives us <em>scalar
+    multiplication</em>:
+    <br>&nbsp;&nbsp;<span class="math">2P = P+P</span>
+    <br>&nbsp;&nbsp;<span class="math">3P = P+P+P</span>
+    <br>&nbsp;&nbsp;... etc.</li>
+    <li>Adding points on a curve is <em>associative</em>: adding
+        the results of point addition will give the same result
+        as adding the component points individually:
+        <br>&nbsp;&nbsp;<span class="math">P+P+P+P = 3P+P = 2P+2P = 4P</span>
     </li>
-    </ul>
 </ul>
+<p>Modular arithmetic (done on <em>numbers</em> in our curve equations):
+<ul>
+    <li>Adding, subtracting, and multiplying numbers will
+        "wrap around" at <span class="math">p=2<sup>255</sup>-19</span>.
+    <li>Division is replaced
+    with multiplicative inverses: instead of dividing by <span class="math">x</span>
+    we find the number <span class="math">x<sup>-1</sup></span>
+    that satisfies the relationship <span class="math">x*x<sup>-1</sup>=1</span>
+    in our prime field, and multiply by that.
+</li>
+</ul>
+</div>
 
+<div class="section">
 <h3>Hands on</h3>
-<p>Let's play with some actual numbers</p>
+<p>Let's play with some actual numbers:</p>
 
 <form class="form" id="form-pubkey">
     <div class="form-group">
+    Base point multiplier
+    <br>
     <label for="pubkey-privkey">secret key:</label>
-    <input class="form-n long right" id="pubkey-privkey" type="text"
+    <span class="hex-floater">0x</span>
+    <input class="long right squish" id="pubkey-privkey" type="text"
            data-chars="0-9a-fA-F" placeholder="secret key" value="1">
+    <div class="form-row">
     <button type="button" id="pubkey-plus-one">+1</button>
     <button type="button" id="pubkey-double">Double</button>
+    <button type="button" id="pubkey-mask">Add Key Protection</button>
+    </div>
     </div>
     <div class="form-group">
-    <span id="pubkey-explainer">Adding the base point x=9 to itself
-        <span id="pubkey-explainer-num">1</span>
-        times gives us a new<span class="math">x</span> coordinate,
-        which is our</span><br>
+    <span id="pubkey-explainer">Base point P
+        (<span class="math">x=9</span>) repeatedly added to itself
+        to create point
+        <span id="pubkey-explainer-num">1P</span>. The <span class="math">x
+        </span> coordinate is our
+        </span><br>
     <label for="pubkey-result">public key:</label>
-    <span id="pubkey-result" class="math"></span>
+    <span class="hex-floater">0x</span>
+    <input class="long right squish" id="pubkey-result" type="text"
+           readonly>
     </div>
 </form>
 
-<p>Let's perform a simple key exchange. Give Alice a secret key, such as "7".
-    Use the calculator above to find Alice's public key. Give Bob a different
-    secret key, such as "5". Use the calculator to find Bob's public key.
+<p>Let's perform a simple key exchange. Give Alice <strong>a secret
+    key</strong>, such as "7", and use the calculator above to find Alice's
+    <strong>public key</strong>. Give Bob a different <strong>secret
+        key</strong>, such as "5", and use the calculator to find Bob's
+    <strong>public key</strong>:
+<ul>
+    <li>Alice's secret key: <span class="math">k<sub>a</sub></span>
+        = <span class="squish">7</span>
+    <li>Alice's public key: <span class="math">k<sub>a</sub>P</span>
+    (<span class="math">7P</span>) =
+    <span class="squish">0daf32e7ed8099122b2dfa4c1d8c4a20c0972a1538bf0575338aae0fe0841828</span>
+    <li>Bob's secret key: <span class="math">k<sub>b</sub></span>
+        = <span class="squish">5</span>
+    <li>Bob's public key: <span class="math">k<sub>b</sub>P</span>
+    (<span class="math">5P</span>) =
+    <span class="squish">41b6ec3c50ee7af203c0026e5e079e7fa8cbc9bc581d49cb0d537d5778497c87</span>
+</ul>
+
+<p>Now let's be Alice. Put Alice's secret key
+    (<span class="math">k<sub>a</sub></span>) into the calculator below,
+    and multiply it by Bob's public key
+    (<span class="math">k<sub>b</sub>P</span>).
+<ul>
+    <li>Shared secret: <span class="math">k<sub>a</sub>k<sub>b</sub>P</span>
+    (<span class="math">35P</span>) =
+    <span class="squish">1b9b715c415e547a13ca98a9f561d54499cc7402a1098414eddcfaf83ffbe3f8</span>
+    </li>
+</ul>
+
+<form class="form" id="form-mult">
+    <div class="form-group">
+    Arbitrary point multiplier
+    <br>
+    <label for="mult-n">multiplier:</label>
+    <span class="hex-floater">0x</span>
+    <input class="long right squish" id="mult-n" type="text"
+           data-chars="0-9a-fA-F" placeholder="multiplier">
+    </div>
+    <div class="form-group">
+    <label for="mult-point">point:</label>
+    <span class="hex-floater"></span>
+    <input class="long right squish" id="mult-point" type="text"
+           data-chars="0-9a-fA-F" placeholder="point">
+    </div>
+    <div class="form-group">
+    <label for="mult-result">new point:</label>
+    <span class="hex-floater"></span>
+    <input class="long right squish" id="mult-result" type="text" readonly>
+    </div>
+</form>
+
+<p>Let's switch over to Bob. Put Bob's secret key
+    (<span class="math">k<sub>b</sub></span>) into the calculator, and
+    multiply it by Alice's public key
+    (<span class="math">k<sub>a</sub>P</span>).
+    The result matches, because
+    <span class="math">k<sub>a</sub>k<sub>b</sub>P = k<sub>b</sub>k<sub>a
+    </sub>P = 35P</span>!
 </p>
 
-<p>Now let's be Alice. Put Bob's public key into the calculator below,
-    and multiply it by Alice's secret key. Note the result.</p>
-<p>Let's switch over to Bob. Pub Alice's public key into the calculator, and
-    multiply it by Bob's public key. The result should match! This is the
-    shared secret which Alice and Bob have exchanged, by giving each other
-    their public keys.</p>
-<p>Since the eavesdropper can't see either of Alice or
-    Bob's secret keys, they can't compute the same result except by guessing
-    one of the secret keys. Since secret keys are 256 bits of random data,
-    they're not likely to succeed.
+<p>Since the eavesdropper can't see either of Alice or Bob's secret keys,
+    they can't compute the same result.
 </p>
+</div>
 
+<div class="section">
 <h3>Questions</h3>
 <p>
 Q - why can't reproduce openssl
@@ -170,6 +237,7 @@ page on
 https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication and/or RFC
 7748 for information on implementations.
 </p>
+</div>
 </div>
 </body>
 </html>

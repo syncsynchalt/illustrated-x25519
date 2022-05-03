@@ -28,23 +28,28 @@
         let result = document.getElementById('pubkey-result');
         let explainer = document.getElementById('pubkey-explainer');
         let n = getPubkeyPrivkey();
+        if (n) {
+            const nn = n % 2n ** 256n;
+            if (n !== nn) {
+                n = nn;
+                setPubkeyPrivkey(n);
+            }
+        }
         if (!n) {
             explainer.classList.add('hidden');
-            result.innerText = '';
+            result.value = 'N/A';
             return;
         }
         explainer.classList.remove('hidden');
-        document.getElementById('pubkey-explainer-num').innerText = n.toString();
-        const nn = n % field.p;
-        if (n !== nn) {
-            n = nn;
-            setPubkeyPrivkey(n);
+        let humanN = `${n}`;
+        if (humanN.length > 13) {
+            humanN = `${humanN.substring(0, 10)}...`;
         }
+        document.getElementById('pubkey-explainer-num').innerText = `${humanN}P`;
         // xxx todo - set form error if throw here
-        // xxx todo - only allow valid chars
         let {x, z} = curve.pointMult(9n, n);
         let pubkey = curve.X(x, z);
-        result.innerText = field.toHex(pubkey, 256);
+        result.value = field.toHex(pubkey, 256);
     }
 
     function plusOne() {
@@ -67,6 +72,38 @@
         calcPubkey();
     }
 
+    function addMask() {
+        let n = getPubkeyPrivkey();
+        if (!n) {
+            n = 0n;
+        }
+        n %= 2n**256n;
+        n &= 2n**255n-8n;
+        n |= 1n << 254n;
+        setPubkeyPrivkey(n);
+        calcPubkey();
+    }
+
+    function calcMult() {
+        let result = document.getElementById('mult-result');
+        result.value = 'N/A';
+        let strN = document.getElementById('mult-n').value;
+        let strPoint = document.getElementById('mult-point').value;
+        if (!strN || !strPoint) {
+            return;
+        }
+        let n = BigInt(`0x${strN}`);
+        let point = BigInt(`0x${strPoint}`);
+        if (!n || !point) {
+            return;
+        }
+        n %= 256n;
+        point %= field.p;
+        let { x, z } = curve.pointMult(point, n);
+        let X = curve.X(x, z);
+        result.value = field.toHex(X, 256);
+    }
+
     /**
      * @param el {HTMLInputElement} input element
      */
@@ -85,6 +122,9 @@
         document.getElementById('pubkey-privkey').oninput = calcPubkey;
         document.getElementById('pubkey-plus-one').onclick = plusOne;
         document.getElementById('pubkey-double').onclick = double;
+        document.getElementById('pubkey-mask').onclick = addMask;
+        document.getElementById('mult-n').oninput = calcMult;
+        document.getElementById('mult-point').oninput = calcMult;
 
         const els = document.querySelectorAll('input[data-chars]');
         els.forEach((el) => {
