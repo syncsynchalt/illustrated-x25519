@@ -49,8 +49,7 @@
 </div>
 <div class="container">
 <h1>X25519 Key Exchange</h1>
-<h4>Let's go hands-on and learn how to exchange secrets in a secure
-    conversation.</h4>
+<h4>Let's exchange a secret to start a secure conversation.</h4>
 
 <div class="section">
 <h3>Overview</h3>
@@ -59,15 +58,21 @@
     the name of one method of key exchange, using the Curve25519 elliptic
     curve.</p>
 
-<p>This method of key exchange works by defining a field of numbers (in this
-    case the numbers <span class="math">0</span> through
-    <span class="math">2<sup>255</sup>-19</span>
-    and then
-    defining some operations on that field so that the following relationship
-    is true:
-    <span class="centered tt">k<sub>b</sub>*(k<sub>a</sub>*P)
-        = k<sub>a</sub>*(k<sub>b</sub>*P)</span>
-</p>
+<p>This method of key exchange works by doing math on an elliptic
+    curve, specifically:
+    <div class="text-center pb1">
+<span class="math">y<sup>2</sup> = x<sup>3</sup> + 486662x<sup>2</sup> + x</span>
+</div>
+
+<p>The math operations done on that curve will be in what's called modular
+    arithmetic, using the integers
+    <span class="math">0</span> through
+    <span class="math">2<sup>255</sup>-19</span>.  And with that math, we'll
+    be doing a key exchange that looks like this:
+    <div class="text-center pb1">
+    <span class="math">k<sub>b</sub>*(k<sub>a</sub>*P)
+    = k<sub>a</sub>*(k<sub>b</sub>*P)</span>
+    </div>
 
 <p>Note that the above is not using simple multiplication.
     It does have properties <i>similar</i> to multiplication, as we'll explain
@@ -75,49 +80,51 @@
 
 <p>Let's give the above terms some better names:
 <ul>
-    <li><span class="math">k<sub>a</sub></span> - Alice's private (secret)
-        key - a 256-bit (32-byte) random number</li>
-    <li><span class="math">k<sub>b</sub></span> - Bob's private (secret) key
-        - a 256-bit (32-byte) random number</li>
+    <li><span class="math">k<sub>a</sub></span> - Alice's secret key
+        - a 255-bit (~32-byte) random number</li>
+    <li><span class="math">k<sub>b</sub></span> - Bob's secret key
+        - a 255-bit (~32-byte) random number</li>
     <li><span class="math">P</span> - a point on the curve,
         where <span class="math">x = 9</span></li>
     <li><span class="math">k<sub>a</sub>*P</span> - Alice's public key</li>
     <li><span class="math">k<sub>b</sub>*P</span> - Bob's public key</li>
 </ul>
-<p>Let's also define our elliptic curve, which is:
-    <span class="math">y<sup>2</sup> = x<sup>3</sup> + 486662x<sup>2</sup> + x</span>
-</p>
 </div>
 
 <div class="section">
 <h3>Math on the curve</h3>
-<p>The most straightforward explanation for elliptic curve math I've found
-    is Andrea Corbellini's <a
+<p>This section can be skipped for those that don't need to dig into the math
+    of elliptic curves.
+<p>A straightforward explanation for elliptic curve math is Andrea Corbellini's <a
             href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/"
-    >Elliptic Curve Cryptography: a gentle introduction</a>. Those pages
-    describe a slightly different curve type, but the lessons in it apply.
+    >Elliptic Curve Cryptography: a gentle introduction</a>. That page
+    describes a slightly different curve type, but the lessons in it apply here.
 
 <p>The takeaways from that site are:
-<p>Point operations (done on <em>points</em>):
+<p><strong>Point operations</strong> (performed on points on the curve):
 <ul>
-    <li><em>Adding</em> two points on a curve gives a third point
-    <li>Repeated additions of points on a curve gives us <em>scalar
+    <li><em>Adding</em> two points on the curve gives a third point, based on
+        the line between two points and its intersection with the
+        curve.
+    <li>Repeated additions of a point on the curve gives us <em>scalar
     multiplication</em>:
-    <br>&nbsp;&nbsp;<span class="math">2P = P+P</span>
-    <br>&nbsp;&nbsp;<span class="math">3P = P+P+P</span>
+    <br>&nbsp;&nbsp;<span class="math">2P=P+P</span>
+    <br>&nbsp;&nbsp;<span class="math">3P=P+P+P</span>
+    <br>&nbsp;&nbsp;<span class="math">6P=P+P+P+P+P+P</span>
     <br>&nbsp;&nbsp;... etc.</li>
-    <li>Adding points on a curve is <em>associative</em>: adding
+    <li>Adding points on the curve is <em>associative</em>: adding
         the results of point addition will give the same result
         as adding the component points individually:
         <br>&nbsp;&nbsp;<span class="math">P+P+P+P = 3P+P = 2P+2P = 4P</span>
     </li>
 </ul>
-<p>Modular arithmetic (done on <em>numbers</em> in our curve equations):
+<p><strong>Modular arithmetic</strong> (used in curve math when calculating
+    addition and multiplication of points above):
 <ul>
     <li>Adding, subtracting, and multiplying numbers will
-        "wrap around" at <span class="math">p=2<sup>255</sup>-19</span>.
+        "wrap around" at the prime <span class="math">p=2<sup>255</sup>-19</span>.
     <li>Division is replaced
-    with multiplicative inverses: instead of dividing by <span class="math">x</span>
+    with the multiplicative inverse: instead of dividing by <span class="math">x</span>
     we find the number <span class="math">x<sup>-1</sup></span>
     that satisfies the relationship <span class="math">x*x<sup>-1</sup>=1</span>
     in our prime field, and multiply by that.
@@ -127,35 +134,34 @@
 
 <div class="section">
 <h3>Hands on</h3>
-<p>Let's play with some actual numbers:</p>
+<p>Let's play with some actual numbers. This form lets us do point
+    multiplication on the base point <span class="math">P</span>, which
+    is a point on the curve with coordinate <span class="math">x=9</span>.
+</p>
 
-<form class="form" id="form-pubkey">
+<form id="form-pubkey">
     <div class="form-group">
-    Base point multiplier
-    <br>
-    <label for="pubkey-privkey">secret key:</label>
-    <span class="hex-floater">0x</span>
-    <input class="long right squish" id="pubkey-privkey" type="text"
-           data-chars="0-9a-fA-F" placeholder="secret key" value="1">
     <div class="form-row">
-    <button type="button" id="pubkey-plus-one">+1</button>
-    <button type="button" id="pubkey-double">Double</button>
-    <button type="button" id="pubkey-mask">Add Key Protection</button>
+    P multiplier
+    <button type="button" class="text-right" id="pubkey-plus-one">+1</button>
+    <button type="button" class="text-right" id="pubkey-double">Double</button>
+    <button type="button" class="text-right" id="pubkey-clamp">Clamp*</button>
     </div>
     </div>
     <div class="form-group">
-    <span id="pubkey-explainer">Base point P
-        (<span class="math">x=9</span>) repeatedly added to itself
-        to create point
-        <span id="pubkey-explainer-num">1P</span>. The <span class="math">x
-        </span> coordinate is our
-        </span><br>
-    <label for="pubkey-result">public key:</label>
-    <span class="hex-floater">0x</span>
-    <input class="long right squish" id="pubkey-result" type="text"
-           readonly>
+    <label for="pubkey-privkey">secret key (n):</label>
+    <input class="long right squish" id="pubkey-privkey" type="text"
+           data-deco="hex-ify" value="0x1">
+    </div>
+    <div class="form-group">
+    <label for="pubkey-result">public key (nP):</label>
+    <input class="long right squish" id="pubkey-result" type="text" readonly>
     </div>
 </form>
+
+<p>
+    <sup>*</sup> See below for an explanation of "Clamp".
+</p>
 
 <p>Let's perform a simple key exchange. Give Alice <strong>a secret
     key</strong>, such as "7", and use the calculator above to find Alice's
@@ -186,25 +192,23 @@
     </li>
 </ul>
 
-<form class="form" id="form-mult">
+<form id="form-mult">
     <div class="form-group">
-    Arbitrary point multiplier
+    Other point multiplier
     <br>
     <label for="mult-n">multiplier:</label>
-    <span class="hex-floater">0x</span>
     <input class="long right squish" id="mult-n" type="text"
-           data-chars="0-9a-fA-F" placeholder="multiplier">
+           data-deco="hex-ify" placeholder="multiplier">
     </div>
     <div class="form-group">
     <label for="mult-point">point:</label>
-    <span class="hex-floater"></span>
     <input class="long right squish" id="mult-point" type="text"
-           data-chars="0-9a-fA-F" placeholder="point">
+           data-deco="hex-ify" placeholder="point">
     </div>
     <div class="form-group">
     <label for="mult-result">new point:</label>
-    <span class="hex-floater"></span>
-    <input class="long right squish" id="mult-result" type="text" readonly>
+    <input class="long right squish" id="mult-result" type="text"
+           placeholder="result" readonly>
     </div>
 </form>
 
@@ -223,20 +227,67 @@
 </div>
 
 <div class="section">
-<h3>Questions</h3>
-<p>
-Q - why can't reproduce openssl
-A - endian and key bits
+<h3>Odds and ends</h3>
+<p><span class="qa">Q:</span> Why can't I reproduce
+    these
+    results in
+    <span class="tt">openssl</span> or other tools?
 
-Q - why no Y numbers
-A - "compressed" points, only X given, all math is done without regards to Y
+<p><span class="qa">A:</span> The likely reason is that
+    private
+    keys
+    in Curve25519
+    are modified slightly to avoid insecure keys and timing attacks (see
+    section 4.7 "Clamping" in <a href="https://martin.kleppmann.com/papers/curve25519.pdf"
+    >Implementing Curve25519/X25519</a> by Martin Kleppmann).
+    In particular the following five bits are clamped to
+    pre-determined values in real implementations (click the "Clamp" button
+    to apply these bit values to your key):
+<table class="table table-condensed">
+    <thead>
+    <tr><th>Bit</th><th>Value</th><th>Reason</th></tr>
+    </thead>
+    <tr><td>0</td><td>0</td><td>Small-subgroup attacks</td></tr>
+    <tr><td>1</td><td>0</td><td>Small-subgroup attacks</td></tr>
+    <tr><td>2</td><td>0</td><td>Small-subgroup attacks</td></tr>
+    <tr><td>254</td><td>1</td><td>Protect against timing leak</td></tr>
+    <tr><td>255</td><td>0</td><td>n < 2<sup>255</sup></td></tr>
+</table>
 
-Q - how to reproduce
-A - see wikipedia page on Montgomery curve for doubling X values, see wikipedia
-page on
-https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication and/or RFC
-7748 for information on implementations.
-</p>
+<p>You may still find that your output does not match
+    because X25519 keys are stored and transmitted in little-endian
+    order while this page displays them in as numbers which are
+    usually interpreted as big-endian.</p>
+
+<p><span class="qa">Q:</span> If these are points in
+    an x-y
+    curve,
+    where are
+    the y coordinates?
+
+<p><span class="qa">A:</span> The curve is symmetric on the y-axis, and each point
+    on the curve
+    <span class="math">(x, y)</span> has a corresponding inverted point
+    <span class="math">(x, -y)</span>. For simplicity in implementation and
+    to reduce key length only the <span class="math">x</span> coordinate of
+    each point is computed.</p>
+
+<p>Some other EC mechanisms do make use of both
+    <span class="math">x</span> and <span class="math">y</span> coordinates.
+
+<p><span class="qa">Q:</span> Can you give me more details on elliptic curve
+                    operations?</p>
+
+<p><span class="qa">A:</span> I found the <a
+        href="https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication"
+>Wikipedia page on EC point multiplication</a> useful, in particular the
+    section on Montgomery ladders, which Curve25519 is designed around the
+    use of. The <a href="https://en.wikipedia.org/wiki/Montgomery_curve#Montgomery_arithmetic"
+    >Wikipedia page on Montgomery curves</a> also has equations for addition and
+    doubling. <a
+            href="https://datatracker.ietf.org/doc/html/rfc7748">RFC 7748</a>
+    was also useful as it gives straightforward steps for performing
+    Curve25519 multiplication in constant time with a Montgomery ladder.</p>
 </div>
 </div>
 </body>

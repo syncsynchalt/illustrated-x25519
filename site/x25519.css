@@ -7,7 +7,6 @@
 }
 input.long {
     width: 36em;
-    padding-right: 0.5em;
     font-family: "Courier", monospace;
 }
 input.right {
@@ -17,21 +16,20 @@ input.right {
     visibility: hidden;
 }
 
-.hex-floater {
-    position: relative;
-    color: #888;
-    left: 1.5em;
-}
-
-input.hex-prefix {
-    content: "0x";
-    color: #888;
-    margin-left: -3em;
+.tt {
+    font-family: "Monaco", "Courier", monospace;
 }
 
 .squish {
     font-family: "Courier", monospace;
     letter-spacing: -1px;
+}
+
+.qa {
+    font-family: "Baskerville", sans-serif;
+    /*font-weight: bold;*/
+    font-size: 3em;
+    color: #666;
 }
 
 .container > h1:after {
@@ -53,7 +51,7 @@ h4 {
 
 .section h3:before {
     content: "❡\00a0";
-    color: #888;
+    color: #666;
 }
 
 .section h3 {
@@ -61,12 +59,27 @@ h4 {
 }
 
 .section {
-    margin: 1em 0;
+    margin: 1em auto;
     background-color: #D8EDCF;
     padding: 1em;
     border-radius: 1em;
     border: 2px solid transparent;
     box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    max-width: 800px;
+}
+
+form {
+    display: block;
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #FAF7DC;
+    border: 2px solid #e0d998;
+    border-radius: 1em;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+}
+
+.pb1 {
+    padding-bottom: 1em;
 }
 
 /***** header ******/
@@ -87,7 +100,6 @@ h4 {
 }
 .header a.this-page:before {
     content: "❧\00a0";
-    /* content: "•\00a0"; */
 }
 .header a, .header span {
     margin-right: 0.5em;
