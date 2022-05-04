@@ -92,6 +92,8 @@ form table td {
 
 form button {
     touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
     margin: 2px 0;
     display: inline-block;
     text-align: center;
@@ -104,31 +106,28 @@ form button {
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 
     color: #333;
-    /*border: solid 1px #da7c0c;*/
-    border: solid 1px #fadebe;
-    /*background: #f78d1d;*/
-    /*background: linear-gradient(180deg, #faa51a 1%, #f47a20 100%);*/
-    background: #faebad;
-    background: linear-gradient(180deg, #faebad 1%, #ebd2ab 100%);
+    border: solid 1px #eac88a;
+    background: #f2dcb5;
+    background: linear-gradient(180deg, #f9efdc 1%, #f6e6cb 100%);
 }
 form button:hover {
-    text-decoration: none;
-    background: #ffdbb5;
-    /*background: linear-gradient(180deg, #f88e11 1%, #f06015 100%);*/
-    background: linear-gradient(180deg, #ffdbb5 1%, #ffc0a1 100%);
+    background: #f5e4c7;
+    background: linear-gradient(180deg, #fbf5e9 1%, #f5e4c7 100%);
 }
 form button:active {
     position: relative;
     top: 1px;
 }
 
-
-table {
-    /* xxx fix this */
-    border-top-color: #000;
+table.table td, table.table th {
+    border-color: #666 !important;
 }
 table.table-not-full {
     width: auto;
+}
+
+.diagram {
+    padding: 1em;
 }
 
 .pb1 {
@@ -138,17 +137,7 @@ table.table-not-full {
     margin-bottom: 1em;
 }
 
-form .help-hover {
-    cursor: help;
-}
-form .help-hover-content {
-    padding: 0 0.2em;
-    color: #000;
-    background-color: #e0d998;
-    border-radius: 0.5em;
-}
-
-/***** header ******/
+/***** header *****/
 
 .header {
     width: 100%;
@@ -172,4 +161,39 @@ form .help-hover-content {
 }
 .header a.this-page {
     font-weight: bold;
+}
+
+/***** responsive *****/
+
+.flex-container {
+    display: flex;
+    width: 100%;
+}
+
+@media (max-width: 700px) {
+    .flex-container {
+        flex-direction: column;
+    }
+    .diagram {
+        margin: 0 auto;
+    }
+    span.truncable {
+        display: inline-block;
+        max-width: 25em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    input.truncable {
+        max-width: 20em;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (max-width: 450px) {
+    span.truncable {
+        max-width: 18em;
+    }
+    input.truncable {
+        max-width: 15em;
+    }
 }

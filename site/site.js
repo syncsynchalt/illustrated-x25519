@@ -27,22 +27,25 @@
 
     function calcPubkey() {
         let result = document.getElementById('pubkey-result');
-        let n = getPubkeyPrivkey();
-        if (n) {
-            const nn = n % 2n ** 255n;
-            if (n !== nn) {
-                n = nn;
-                setPubkeyPrivkey(n);
+        try {
+            let n = getPubkeyPrivkey();
+            if (n) {
+                const nn = n % 2n ** 255n;
+                if (n !== nn) {
+                    n = nn;
+                    setPubkeyPrivkey(n);
+                }
             }
+            if (!n) {
+                result.value = 'N/A';
+                return;
+            }
+            let { x, z } = curve.pointMult(9n, n);
+            let pubkey = curve.X(x, z);
+            result.value = `0x${field.toHex(pubkey, 256)}`;
+        } catch (e) {
+            result.value = `Error: ${e}`;
         }
-        if (!n) {
-            result.value = 'N/A';
-            return;
-        }
-        // xxx todo - set form error if throw here
-        let {x, z} = curve.pointMult(9n, n);
-        let pubkey = curve.X(x, z);
-        result.value = `0x${field.toHex(pubkey, 256)}`;
     }
 
     function plusOne() {
@@ -79,22 +82,26 @@
 
     function calcMult() {
         let result = document.getElementById('mult-result');
-        result.value = 'N/A';
-        let strN = document.getElementById('mult-n').value;
-        let strPoint = document.getElementById('mult-point').value;
-        if (!strN || !strPoint) {
-            return;
+        try {
+            result.value = 'N/A';
+            let strN = document.getElementById('mult-n').value;
+            let strPoint = document.getElementById('mult-point').value;
+            if (!strN || !strPoint) {
+                return;
+            }
+            let n = BigInt(strN);
+            let point = BigInt(strPoint);
+            if (!n || !point) {
+                return;
+            }
+            n %= 255n;
+            point %= field.p;
+            let { x, z } = curve.pointMult(point, n);
+            let X = curve.X(x, z);
+            result.value = `0x${field.toHex(X, 256)}`;
+        } catch (e) {
+            result.value = `Error: ${e}`;
         }
-        let n = BigInt(strN);
-        let point = BigInt(strPoint);
-        if (!n || !point) {
-            return;
-        }
-        n %= 255n;
-        point %= field.p;
-        let { x, z } = curve.pointMult(point, n);
-        let X = curve.X(x, z);
-        result.value = `0x${field.toHex(X, 256)}`;
     }
 
     /**

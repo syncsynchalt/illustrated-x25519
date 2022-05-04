@@ -7,9 +7,7 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="A Digression: X25519 Key Exchange"/>
     <meta name="description" content="An explanation and demonstration of Curve25519 Key Exchange"/>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="frombootstrap.css"/>
     <link rel="stylesheet" href="x25519.css"/>
     <script type="module" async src="site.js"></script>
 
@@ -114,10 +112,8 @@ keys for a secure connection.
     >Elliptic Curve Cryptography: a gentle introduction</a>. That page
     describes a different curve, but the concepts still apply here.
     The takeaways from that site are:
-<div class="clearfix">
-<!--suppress CheckImageSize-->
-<img class="float-right" height=250 width=260 src="images/add-points.png"
-     alt="Visual demonstration of point addition">
+<div class="flex-container">
+<div class="meat">
 <p><strong>Point operations</strong> (performed on points on the curve):
 <ul>
     <li><em>Adding</em> two points on the curve gives a third point, based on
@@ -136,20 +132,17 @@ keys for a secure connection.
     </li>
 </ul>
 </div>
-<div class="clearfix">
-<div style="float: right; width: 20em;" class="text-center">
-<div>
-<strong>Examples</strong>
-    <span class="math">(p=23)</span></div>
-<div>Addition: <span class="math">16 + 15 = 31mod23 = 8</span></div>
-<div>Subtraction: <span class="math">8 - 13 = -5mod23 = 18</span></div>
-<div>Multiplication: <span class="math">8 - 13 = -5mod23 = 18</span></div>
-<div>Multiplicative inverse:
-    <span class="math">7&lowast;7<sup>-1</sup>mod23 = 1
-    <br>&rarr; 7&lowast;10mod23 = 1 &rarr; 7<sup>-1</sup>=10</span></div>
-<div>Division: <span class="math">4/7 &rarr; 4&lowast;7<sup>1</sup>mod23
-    <br>&rarr; 4&lowast;10mod23 = 17</span></div>
+<div class="diagram text-center">
+<!--suppress CheckImageSize-->
+<img height=250 width=260
+     src="images/add-points.png"
+     alt="Visual demonstration of point addition">
+<br>
+<small><span><strong>Point Addition: P+Q=R</strong></span></small>
 </div>
+</div>
+<div class="flex-container">
+<div class="meat">
 <p><strong>Modular arithmetic</strong> (used when calculating
     addition and multiplication of points above):
 <ul>
@@ -163,6 +156,20 @@ keys for a secure connection.
     in our prime field, and multiply by that.
 </li>
 </ul>
+</div>
+<div style="min-width: 20em;" class="text-center">
+<div>
+<strong>Examples</strong> <span class="math">(with p=23)</span>
+</div>
+<div>Addition: <span class="math">16+15 = 31mod23 = 8</span></div>
+<div>Subtraction: <span class="math">8-13 = -5mod23 = 18</span></div>
+<div>Multiplication: <span class="math">8-13 = -5mod23 = 18</span></div>
+<div>Multiplicative inverse:
+<span class="math">7&lowast;7<sup>-1</sup>mod23 = 1
+    <br>&rarr; 7&lowast;10mod23=1 &rarr; 7<sup>-1</sup> = 10</span></div>
+<div>Division: <span class="math">4/7 &rarr; 4&lowast;7<sup>1</sup>mod23
+    <br>&rarr; 4&lowast;10mod23 = 17</span></div>
+</div>
 </div>
 </div>
 
@@ -184,7 +191,7 @@ keys for a secure connection.
             <td></td>
             <td class="text-right">
                 <button type="button" class="text-right" id="pubkey-plus-one">+1</button>
-                <button type="button" class="text-right" id="pubkey-double">Double</button>
+                <button type="button" class="text-right" id="pubkey-double">x2</button>
                 <button type="button" class="text-right" id="pubkey-clamp">Clamp</button>
                 <sup title="See below for explanation of clamping"
                      class="help-hover"><span class="help-hover-content">?</span>
@@ -196,8 +203,8 @@ keys for a secure connection.
             <label for="pubkey-privkey">secret key (n):</label>
             </td>
             <td>
-            <input class="long right squish" id="pubkey-privkey" type="text"
-                   data-deco="hex-ify" value="0x1">
+            <input class="long right squish truncable" id="pubkey-privkey"
+                   type="text" data-deco="hex-ify" value="0x1">
             </td>
         </tr>
         <tr>
@@ -205,7 +212,8 @@ keys for a secure connection.
                 <label for="pubkey-result">public key (nP):</label>
             </td>
             <td>
-                <input class="long right squish" id="pubkey-result" type="text" readonly>
+                <input class="long right squish truncable" id="pubkey-result"
+                       type="text" readonly>
             </td>
         </tr>
     </table>
@@ -225,12 +233,12 @@ keys for a secure connection.
         = <span class="squish">7</span>
     <li>Alice's public key: <span class="math">k<sub>a</sub>P</span>
     <span class="math">(7P)</span> =
-    <span class="squish">0daf32e7ed8099122b2dfa4c1d8c4a20c0972a1538bf0575338aae0fe0841828</span>
+    <span class="squish truncable">0daf32e7ed8099122b2dfa4c1d8c4a20c0972a1538bf0575338aae0fe0841828</span>
     <li>Bob's secret key: <span class="math">k<sub>b</sub></span>
         = <span class="squish">5</span>
     <li>Bob's public key: <span class="math">k<sub>b</sub>P</span>
     <span class="math">(5P)</span> =
-    <span class="squish">41b6ec3c50ee7af203c0026e5e079e7fa8cbc9bc581d49cb0d537d5778497c87</span>
+    <span class="squish truncable">41b6ec3c50ee7af203c0026e5e079e7fa8cbc9bc581d49cb0d537d5778497c87</span>
 </ul>
 
 <p>Now let's be Alice. Put Alice's secret key
@@ -240,7 +248,7 @@ keys for a secure connection.
 <ul>
     <li>Shared secret: <span class="math">k<sub>a</sub>k<sub>b</sub>P</span>
     <span class="math">(35P)</span> =
-    <span class="squish">1b9b715c415e547a13ca98a9f561d54499cc7402a1098414eddcfaf83ffbe3f8</span>
+    <span class="squish truncable">1b9b715c415e547a13ca98a9f561d54499cc7402a1098414eddcfaf83ffbe3f8</span>
     </li>
 </ul>
 
@@ -254,8 +262,8 @@ keys for a secure connection.
                 <label for="mult-n">secret key (n):</label>
             </td>
             <td>
-                <input class="long right squish" id="mult-n" type="text"
-                       data-deco="hex-ify" placeholder="multiplier">
+                <input class="long text-right squish truncable" id="mult-n"
+                       type="text" data-deco="hex-ify" placeholder="multiplier">
             </td>
         </tr>
         <tr>
@@ -263,8 +271,8 @@ keys for a secure connection.
                 <label for="mult-point">public key (Q):</label>
             </td>
             <td>
-                <input class="long right squish" id="mult-point" type="text"
-                       data-deco="hex-ify" placeholder="point">
+                <input class="long text-right squish truncable" id="mult-point"
+                       type="text" data-deco="hex-ify" placeholder="point">
             </td>
         </tr>
         <tr>
@@ -272,8 +280,8 @@ keys for a secure connection.
                 <label for="mult-result">new point (nQ):</label>
             </td>
             <td>
-                <input class="long right squish" id="mult-result" type="text"
-                       placeholder="result" readonly>
+                <input class="long text-right squish truncable" id="mult-result"
+                       type="text" placeholder="result" readonly>
             </td>
         </tr>
     </table>
@@ -295,32 +303,30 @@ keys for a secure connection.
 <div class="section">
 <h3>Odds and ends</h3>
 <p><span class="qa">Q:</span> Why can't I reproduce
-    these
-    results in
-    <span class="tt">openssl</span> or other tools?
+    these results in <span class="tt">openssl</span> or other tools?
 
-<p><span class="qa">A:</span> Private keys in Curve25519
-    are modified slightly to avoid insecure keys and timing attacks (see
-    section 4.7 "Clamping" in <a href="https://martin.kleppmann.com/papers/curve25519.pdf"
+<p><span class="qa">A:</span> Private keys used in actual Curve25519
+    are modified slightly to avoid particular attacks
+    (see section 4.7 "Clamping" in <a
+            href="https://martin.kleppmann.com/papers/curve25519.pdf"
     >Implementing Curve25519/X25519</a> by Martin Kleppmann).
     In particular the following five bits are clamped to
     pre-determined values in real implementations (click the "Clamp" button
-    to apply these bit values to your key):
+    to apply these bit values to your secret key):
 <table class="table table-condensed table-not-full">
     <thead>
     <tr><th>Bit</th><th>Value</th><th>Reason</th></tr>
     </thead>
-    <tr><td>0</td><td>0</td><td>Small-subgroup attacks</td></tr>
-    <tr><td>1</td><td>0</td><td>Small-subgroup attacks</td></tr>
-    <tr><td>2</td><td>0</td><td>Small-subgroup attacks</td></tr>
-    <tr><td>254</td><td>1</td><td>Protect against timing leak</td></tr>
+    <tr><td>0</td><td>0</td><td>Small-subgroup attack</td></tr>
+    <tr><td>1</td><td>0</td><td>Small-subgroup attack</td></tr>
+    <tr><td>2</td><td>0</td><td>Small-subgroup attack</td></tr>
+    <tr><td>254</td><td>1</td><td>Protection against timing leak</td></tr>
     <tr><td>255</td><td>0</td><td>n < 2<sup>255</sup></td></tr>
 </table>
 
 <p>You may still find that your output does not match
     because X25519 keys are stored and transmitted in little-endian
-    order while this page displays them in as numbers which are
-    usually interpreted as big-endian.</p>
+    order while this page displays them as plain numbers.</p>
 
 <p><span class="qa">Q:</span> If these are points in
     an x-y
@@ -328,12 +334,12 @@ keys for a secure connection.
     where are
     the y coordinates?
 
-<p><span class="qa">A:</span> The curve is symmetric on the y-axis, and each point
-    on the curve
-    <span class="math">(x, y)</span> has a corresponding inverted point
-    <span class="math">(x, -y)</span>. For simplicity in implementation and
-    to reduce key length only the <span class="math">x</span> coordinate of
-    each point is computed.</p>
+<p><span class="qa">A:</span>
+    The <span class="math">y</span> coordinate of each point is not needed
+    for X25519, and for simplicity it is not computed.
+    Using only the <span class="math">x</span> coordinate of also reduces key
+    length, as the <span class="math">y</span> coordinate isn't added to
+    the key.</p>
 
 <p>Some other EC curves do make use of both
     <span class="math">x</span> and <span class="math">y</span> coordinates.
@@ -341,16 +347,24 @@ keys for a secure connection.
 <p><span class="qa">Q:</span> Can you give me more details on elliptic curve
                     operations?</p>
 
-<p><span class="qa">A:</span> I found the <a
+<p><span class="qa">A:</span> I found the following useful:
+<ul>
+    <li><a
         href="https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication"
->Wikipedia page on EC point multiplication</a> useful, in particular the
-    section on Montgomery ladders, which Curve25519 is designed around the
-    use of. The <a href="https://en.wikipedia.org/wiki/Montgomery_curve#Montgomery_arithmetic"
-    >Wikipedia page on Montgomery curves</a> also has equations for addition and
-    doubling. <a
-            href="https://datatracker.ietf.org/doc/html/rfc7748">RFC 7748</a>
-    gives straightforward steps for performing Curve25519 multiplication in
-    constant time with a Montgomery ladder.</p>
+    >Wikipedia: EC point multiplication</a> - particularly the section on
+        Montgomery ladders
+    </li>
+    <li><a href="https://en.wikipedia.org/wiki/Montgomery_curve#Montgomery_arithmetic"
+    >Wikipedia: Montgomery arithmetic</a> - includes equations for addition and
+        doubling of points</li>
+    <li><a href="https://datatracker.ietf.org/doc/html/rfc7748">RFC 7748</a>
+    - recommended algorithm for Curve25519 multiplication in
+    constant time with a Montgomery ladder</li>
+    <li><a href="https://martin.kleppmann.com/papers/curve25519.pdf"
+    >PDF: Implementing Curve25519/X25519</a> - as noted above</li>
+    <li><a href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/"
+    >Elliptic Curve Cryptography: a gentle introduction</a> - as noted above</li>
+</ul>
 </div>
 </div>
 </body>
