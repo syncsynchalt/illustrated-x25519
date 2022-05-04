@@ -1,9 +1,7 @@
 .math {
-    font-family: "Courier", monospace;
+    font-family: "Times New Roman", serif;
+    /*font-family: "Courier", monospace;*/
     font-style: oblique;
-}
-.centered {
-    text-align: center;
 }
 input.long {
     width: 36em;
@@ -12,8 +10,15 @@ input.long {
 input.right {
     text-align: right;
 }
+input:read-only {
+    background-color: transparent;
+    border-color: transparent;
+}
 .hidden {
     visibility: hidden;
+}
+.float-right {
+    float: right;
 }
 
 .tt {
@@ -27,8 +32,8 @@ input.right {
 
 .qa {
     font-family: "Baskerville", sans-serif;
-    /*font-weight: bold;*/
     font-size: 3em;
+    line-height: 1em;
     color: #666;
 }
 
@@ -59,7 +64,7 @@ h4 {
 }
 
 .section {
-    margin: 1em auto;
+    margin: 1.5em auto;
     background-color: #D8EDCF;
     padding: 1em;
     border-radius: 1em;
@@ -78,8 +83,69 @@ form {
     box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
+form .calculator-title {
+    font-weight: bold;
+}
+form table td {
+    padding: 2px;
+}
+
+form button {
+    touch-action: manipulation;
+    margin: 2px 0;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    padding: 3px 11px 4px;
+    text-shadow: 1px 1px 1px rgba(255,255,255,.4);
+    border-radius: 7px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+
+    color: #333;
+    /*border: solid 1px #da7c0c;*/
+    border: solid 1px #fadebe;
+    /*background: #f78d1d;*/
+    /*background: linear-gradient(180deg, #faa51a 1%, #f47a20 100%);*/
+    background: #faebad;
+    background: linear-gradient(180deg, #faebad 1%, #ebd2ab 100%);
+}
+form button:hover {
+    text-decoration: none;
+    background: #ffdbb5;
+    /*background: linear-gradient(180deg, #f88e11 1%, #f06015 100%);*/
+    background: linear-gradient(180deg, #ffdbb5 1%, #ffc0a1 100%);
+}
+form button:active {
+    position: relative;
+    top: 1px;
+}
+
+
+table {
+    /* xxx fix this */
+    border-top-color: #000;
+}
+table.table-not-full {
+    width: auto;
+}
+
 .pb1 {
     padding-bottom: 1em;
+}
+.mb1 {
+    margin-bottom: 1em;
+}
+
+form .help-hover {
+    cursor: help;
+}
+form .help-hover-content {
+    padding: 0 0.2em;
+    color: #000;
+    background-color: #e0d998;
+    border-radius: 0.5em;
 }
 
 /***** header ******/
