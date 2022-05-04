@@ -1,3 +1,7 @@
+body {
+    font-size: 15px;
+}
+
 .math {
     font-family: "Times New Roman", serif;
     /*font-family: "Courier", monospace;*/
@@ -73,10 +77,20 @@ h4 {
     max-width: 800px;
 }
 
+.outerblock {
+    font-size: 16px;
+    max-width: 600px;
+    margin: 1em auto;
+}
+.outerblock p {
+    text-align: center;
+}
+
 form {
     display: block;
     margin: 1em 0;
     padding: 1em;
+    font-size: 14px;
     background-color: #FAF7DC;
     border: 2px solid #e0d998;
     border-radius: 1em;
@@ -99,7 +113,6 @@ form button {
     text-align: center;
     text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 1em;
     padding: 3px 11px 4px;
     text-shadow: 1px 1px 1px rgba(255,255,255,.4);
     border-radius: 7px;
@@ -129,6 +142,45 @@ table.table-not-full {
 .diagram {
     padding: 1em;
 }
+
+/***** tooltip *****/
+
+.help-tooltip {
+    display: inline-block;
+    position: relative;
+    font-size: 75%;
+    top: -.5em;
+    text-align: center;
+    min-width: 1.4em;
+    color: #444;
+    background-color: #f6e6cb;
+    border-radius: 10px;
+    border: #eac88a 1px solid;
+    user-select: none;
+    cursor: help;
+}
+
+.help-tooltip[data-tooltip-text]:hover:after {
+    text-align: left;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 3px 1px rgba(50, 50, 50, 0.4);
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 12px;
+    content: attr(data-tooltip-text);
+
+    top: 120%;
+    right: -1em;
+    padding: 7px 12px;
+    position: absolute;
+    width: auto;
+    min-width: 9em;
+
+    z-index: 9999;
+}
+
+/***** sizing and positioning *****/
 
 .pb1 {
     padding-bottom: 1em;
@@ -179,12 +231,12 @@ table.table-not-full {
     }
     span.truncable {
         display: inline-block;
-        max-width: 25em;
+        max-width: 32em;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     input.truncable {
-        max-width: 20em;
+        max-width: 25em;
         text-overflow: ellipsis;
     }
 }

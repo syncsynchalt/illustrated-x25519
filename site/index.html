@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="title" content="A Digression: X25519 Key Exchange"/>
+    <meta name="title" content="X25519 Key Exchange"/>
     <meta name="description" content="An explanation and demonstration of Curve25519 Key Exchange"/>
     <link rel="stylesheet" href="frombootstrap.css"/>
     <link rel="stylesheet" href="x25519.css"/>
@@ -14,16 +14,18 @@
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://x25519.ulfheim.net/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="A Digression: X25519 Key Exchange">
-    <meta property="og:description" content="An explanation and demonstration of Curve25519 Key Exchange">
+    <meta property="og:title" content="X25519 Key Exchange">
+    <meta property="og:description"
+          content="An explanation and demonstration of the key exchange used by TLS and QUIC">
     <meta property="og:image" content="https://x25519.ulfheim.net/images/og.png">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="x25519.ulfheim.net">
     <meta property="twitter:url" content="https://x25519.ulfheim.net/">
-    <meta name="twitter:title" content="A Digression: X25519 Key Exchange">
-    <meta name="twitter:description" content="An explanation and demonstration of Curve25519 Key Exchange">
+    <meta name="twitter:title" content="X25519 Key Exchange">
+    <meta name="twitter:description"
+          content="An explanation and demonstration of the key exchange used by TLS and QUIC">
     <meta name="twitter:image" content="https://x25519.ulfheim.net/images/og.png">
 
     <!-- favicons -->
@@ -193,9 +195,9 @@ keys for a secure connection.
                 <button type="button" class="text-right" id="pubkey-plus-one">+1</button>
                 <button type="button" class="text-right" id="pubkey-double">x2</button>
                 <button type="button" class="text-right" id="pubkey-clamp">Clamp</button>
-                <sup title="See below for explanation of clamping"
-                     class="help-hover"><span class="help-hover-content">?</span>
-                </sup>
+                <span class="help-tooltip" data-tooltip-text="Clamp: Set 5 bits
+                         required by curve security, see below for full
+                         explanation of clamping.">?</span>
             </td>
         </tr>
         <tr>
@@ -313,26 +315,24 @@ keys for a secure connection.
     In particular the following five bits are clamped to
     pre-determined values in real implementations (click the "Clamp" button
     to apply these bit values to your secret key):
-<table class="table table-condensed table-not-full">
+<table class="table table-condensed table-not-full" style="margin-left: 2em;">
     <thead>
     <tr><th>Bit</th><th>Value</th><th>Reason</th></tr>
     </thead>
-    <tr><td>0</td><td>0</td><td>Small-subgroup attack</td></tr>
-    <tr><td>1</td><td>0</td><td>Small-subgroup attack</td></tr>
-    <tr><td>2</td><td>0</td><td>Small-subgroup attack</td></tr>
-    <tr><td>254</td><td>1</td><td>Protection against timing leak</td></tr>
-    <tr><td>255</td><td>0</td><td>n < 2<sup>255</sup></td></tr>
+    <tr><td>0</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
+    <tr><td>1</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
+    <tr><td>2</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
+    <tr><td>254</td><td>1</td><td>Prevent a timing leak</td></tr>
+    <tr><td>255</td><td>0</td><td>Constrain n < 2<sup>255</sup></td></tr>
 </table>
 
 <p>You may still find that your output does not match
     because X25519 keys are stored and transmitted in little-endian
-    order while this page displays them as plain numbers.</p>
+    order while this page displays them as plain numbers. Flipping the byte
+    order should fix that issue.</p>
 
 <p><span class="qa">Q:</span> If these are points in
-    an x-y
-    curve,
-    where are
-    the y coordinates?
+    an x-y curve, where are the y coordinates?
 
 <p><span class="qa">A:</span>
     The <span class="math">y</span> coordinate of each point is not needed
@@ -349,8 +349,7 @@ keys for a secure connection.
 
 <p><span class="qa">A:</span> I found the following useful:
 <ul>
-    <li><a
-        href="https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication"
+    <li><a href="https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication"
     >Wikipedia: EC point multiplication</a> - particularly the section on
         Montgomery ladders
     </li>
@@ -365,6 +364,16 @@ keys for a secure connection.
     <li><a href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/"
     >Elliptic Curve Cryptography: a gentle introduction</a> - as noted above</li>
 </ul>
+</div>
+
+<div class="outerblock">
+<p>The code for this project can be found
+    <a href="https://github.com/syncsynchalt/illustrated-quic">on GitHub</a>.</p>
+</div>
+
+<div class="outerblock">
+<p>If you found this page useful or interesting let me know via Twitter
+    <a href="https://twitter.com/xargsnotbombs">@XargsNotBombs</a>.</p>
 </div>
 </div>
 </body>
