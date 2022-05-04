@@ -37,7 +37,7 @@ input:read-only {
 .qa {
     font-family: "Baskerville", sans-serif;
     font-size: 3em;
-    line-height: 1em;
+    line-height: .90em;
     color: #666;
 }
 
@@ -64,10 +64,11 @@ h4 {
 }
 
 .section h3 {
-    margin: 0 0 1em 0;
+    margin: 0 0 15px 0;
 }
 
 .section {
+    font-size: 14px;
     margin: 1.5em auto;
     background-color: #D8EDCF;
     padding: 1em;
@@ -198,6 +199,8 @@ table.table-not-full {
     border-bottom: 1px solid grey;
     background-color: #FFEFD5;
     color: #555;
+    line-height: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     text-align: right;
 }
