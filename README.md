@@ -1,4 +1,4 @@
-# The Illustrated X25519 Key Exchange
+# X25519 Key Exchange
 
 Published at https://x25519.ulfheim.net
 
