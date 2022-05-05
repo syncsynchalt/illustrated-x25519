@@ -130,7 +130,13 @@
     function addHexFilter(el) {
         let prevOninput = el.oninput;
         el.oninput = (event) => {
-            let v = el.value.replaceAll(/(^0*|[^a-f\d])/ig, '');
+
+            let v = el.value
+                .replaceAll(/0x/ig, '')
+                .replaceAll(/(^0+|[^a-f\d])/ig, '');
+            if (!v) {
+                v = '0';
+            }
             if (v) {
                 v = `0x${v}`;
             }

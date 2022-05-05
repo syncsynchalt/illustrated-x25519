@@ -87,9 +87,10 @@ h4 {
     text-align: center;
 }
 
-form {
+.calculator form {
+    max-width: 48em;
     display: block;
-    margin: 1em 0;
+    margin: 1em auto;
     padding: 1em;
     font-size: 14px;
     background-color: #FAF7DC;
@@ -98,14 +99,19 @@ form {
     box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
-form .calculator-title {
+.calculator .calculator-title {
     font-weight: bold;
 }
-form table td {
+.calculator table td {
     padding: 2px;
 }
 
-form button {
+.calculator table td:first-child {
+    text-align: right;
+    min-width: 8em;
+}
+
+.calculator button {
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
@@ -124,11 +130,11 @@ form button {
     background: #f2dcb5;
     background: linear-gradient(180deg, #f9efdc 1%, #f6e6cb 100%);
 }
-form button:hover {
+.calculator button:hover {
     background: #f5e4c7;
     background: linear-gradient(180deg, #fbf5e9 1%, #f5e4c7 100%);
 }
-form button:active {
+.calculator button:active {
     position: relative;
     top: 1px;
 }

@@ -184,6 +184,7 @@ keys for a secure connection.
     coordinate of <span class="math">nP</span>, the <span class="math">y</span>
     coordinate is not needed or used.</p>
 
+<div class="calculator">
 <form id="form-pubkey">
     <div class="calculator-title">
     Secret key multiplier
@@ -219,12 +220,8 @@ keys for a secure connection.
             </td>
         </tr>
     </table>
-    <!--
-    <small>
-        <sup>&#xFF0A;</sup> See below for an explanation of clamping.
-    </small>
-    -->
 </form>
+</div>
 
 <p>Let's perform a simple key exchange. Give Alice a secret
     key, such as "7", and use the calculator above to find Alice's
@@ -254,6 +251,7 @@ keys for a secure connection.
     </li>
 </ul>
 
+<div class="calculator">
 <form id="form-mult">
     <div class="calculator-title pb1">
     Public key multiplier
@@ -288,6 +286,7 @@ keys for a secure connection.
         </tr>
     </table>
 </form>
+</div>
 
 <p>Let's switch over to Bob. Put Bob's secret key
     (<span class="math">k<sub>b</sub></span>) into the calculator, and
@@ -345,6 +344,7 @@ keys for a secure connection.
     Each <span class="math">x</span>-coordinate
     has two values that satisfy <span class="math">&Sqrt;y<sup>2</sup></span>.
 
+<div class="calculator">
 <form id="form-xy">
     <div class="calculator-title pb1">
     Y-coordinate calculator
@@ -352,7 +352,7 @@ keys for a secure connection.
     <table>
         <tr>
             <td>
-                <label for="xy-x">&nbsp;&nbsp;&nbsp;&nbsp;x:</label>
+                <label for="xy-x">x:</label>
             </td>
             <td>
                 <input class="long text-right squish truncable" id="xy-x"
@@ -361,7 +361,7 @@ keys for a secure connection.
         </tr>
         <tr>
             <td>
-                <label for="xy-y1">&nbsp;&nbsp;&nbsp;&nbsp;y<sub>1</sub>:</label>
+                <label for="xy-y1">y<sub>1</sub>:</label>
             </td>
             <td>
                 <input class="long text-right squish truncable" id="xy-y1"
@@ -370,7 +370,7 @@ keys for a secure connection.
         </tr>
         <tr>
             <td>
-                <label for="xy-y2">&nbsp;&nbsp;&nbsp;&nbsp;y<sub>2</sub>:</label>
+                <label for="xy-y2">y<sub>2</sub>:</label>
             </td>
             <td>
                 <input class="long text-right squish truncable" id="xy-y2"
@@ -379,6 +379,7 @@ keys for a secure connection.
         </tr>
     </table>
 </form>
+</div>
 
 <p><span class="qa">Q:</span> Can you give me more details on elliptic curve
                     operations?</p>
