@@ -128,7 +128,7 @@ describe('curve library', () => {
         let checkInvalid = (x) => {
             x = BigInt(x);
             let msg = `x=${x}`;
-            expect(() => {curve.Y(x)}).to.throw(RangeError, 'not a valid point', msg);
+            expect(() => {curve.Y(x)}).to.throw(RangeError, 'does not have points', msg);
         };
 
         let valid = [0, 1, 4, 6, 7, 8, 9, field.p >> 128n, field.p >> 127n];
