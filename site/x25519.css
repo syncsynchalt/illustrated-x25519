@@ -35,9 +35,11 @@ input:read-only {
 }
 
 .qa {
+    margin-top: 12px;
+    display: inline-block;
     font-family: "Baskerville", sans-serif;
     font-size: 3em;
-    line-height: .90em;
+    line-height: .9em;
     color: #666;
 }
 

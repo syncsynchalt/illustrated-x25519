@@ -2,11 +2,11 @@
 <!--suppress HtmlUnknownAttribute -->
 <html lang="en" ontouchmove>
 <head>
-    <title>X25519 Key Exchange</title>
+    <title>Hands-on: X25519 Key Exchange</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="title" content="X25519 Key Exchange"/>
+    <meta name="title" content="Hands-on: X25519 Key Exchange"/>
     <meta name="description" content="An explanation and demonstration of Curve25519 Key Exchange"/>
     <link rel="stylesheet" href="frombootstrap.css?bust"/>
     <link rel="stylesheet" href="x25519.css?bust"/>
@@ -15,7 +15,7 @@
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://x25519.ulfheim.net/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="X25519 Key Exchange">
+    <meta property="og:title" content="Hands-on: X25519 Key Exchange">
     <meta property="og:description"
           content="An explanation and demonstration of the key exchange used by TLS and QUIC.">
     <meta property="og:image" content="https://x25519.ulfheim.net/images/og.png">
@@ -24,7 +24,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="x25519.ulfheim.net">
     <meta property="twitter:url" content="https://x25519.ulfheim.net/">
-    <meta name="twitter:title" content="X25519 Key Exchange">
+    <meta name="twitter:title" content="Hands-on: X25519 Key Exchange">
     <meta name="twitter:description"
           content="An explanation and demonstration of the key exchange used by TLS and QUIC.">
     <meta name="twitter:image" content="https://x25519.ulfheim.net/images/og.png">
@@ -49,7 +49,7 @@
 <a href="https://tls12.ulfheim.net">TLS 1.2</a>
 </div>
 <div class="container">
-<h1>X25519 Key Exchange</h1>
+<h1>Hands-on: X25519 Key Exchange</h1>
 <h4>Let's exchange a secret to start a secure conversation.</h4>
 
 <div class="section">
@@ -329,7 +329,7 @@ keys for a secure connection.
 <p>You may still find that your output does not match
     because X25519 keys are stored and transmitted in little-endian
     order while this page displays them as plain numbers. Flipping the byte
-    order should fix that issue.</p>
+    order should match them up.</p>
 
 <p><span class="qa">Q:</span> If these are points in
     an x-y curve, where are the y coordinates?
@@ -338,12 +338,12 @@ keys for a secure connection.
     The <span class="math">y</span> coordinates for each point are not needed
     for X25519, and for simplicity they are not computed.
     Using only the <span class="math">x</span> coordinate of also reduces key
-    length, as the <span class="math">y</span> coordinate isn't added to
+    length, as the <span class="math">y</span> coordinate isn't part of
     the key.
 
-<p>Only half of <span class="math">x</span> values are valid on Curve25519.
-    Each <span class="math">x</span>-coordinate
-    has two values that satisfy <span class="math">&Sqrt;y<sup>2</sup></span>.
+<p>Each valid point on the curve has two
+    <span class="math">y</span> values that satisfy
+    <span class="math">sqrt(y<sup>2</sup>)</span>.
 
 <div class="calculator">
 <form id="form-xy">
@@ -382,10 +382,18 @@ keys for a secure connection.
 </form>
 </div>
 
-<p><span class="qa">Q:</span> Can you give me more details on elliptic curve
-                    operations?</p>
+<p>Only half of <span class="math">x</span> values are valid on Curve25519.
+    Going back to our curve equation, this means that the expression
+    <span class="math">x<sup>3</sup> + 486662x<sup>2</sup> + x</span>
+    results in a number that in modular arithmetic has a square root
+    (to satisfy the
+    <span class="math">y<sup>2</sup></span> side of the equation).
 
-<p><span class="qa">A:</span> I found the following useful:
+<p><span class="qa">Q:</span> Can you give me more
+details on elliptic curve operations?
+
+<p><span class="qa">A:</span> I found the following
+useful:
 <ul>
     <li><a href="https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication"
     >Wikipedia: EC point multiplication</a> - particularly the section on
