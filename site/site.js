@@ -1,6 +1,6 @@
 (async () => {
-    let curve = await import('./curve.js');
-    let field = await import('./field.js');
+    let curve = await import('./curve.js?bust');
+    let field = await import('./field.js?bust');
 
     /**
      * Getter for privkey input.
