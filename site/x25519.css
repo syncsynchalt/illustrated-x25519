@@ -177,12 +177,12 @@ table.table-not-full {
     font-size: 12px;
     content: attr(data-tooltip-text);
 
-    top: 120%;
+    top: 130%;
     right: -1em;
     padding: 7px 12px;
     position: absolute;
     width: auto;
-    min-width: 9em;
+    min-width: 11em;
 
     z-index: 9999;
 }
@@ -247,6 +247,9 @@ table.table-not-full {
     input.truncable {
         max-width: 25em;
         text-overflow: ellipsis;
+    }
+    .calculator table td:first-child {
+        min-width: inherit;
     }
 }
 
