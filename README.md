@@ -4,7 +4,7 @@ Published at https://x25519.ulfheim.net
 
 - `site/`: page source for the finished product
 - `js/`: javascript (not site-specific)
-- `js/test`: test code for javascript
+- `js/test/`: test code for javascript
 
 ### Deploy instructions
 
