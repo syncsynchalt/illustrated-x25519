@@ -148,7 +148,7 @@ function Y(X) {
         return field.sqrt(YY % field.p);
     } catch (e) {
         if (e instanceof RangeError) {
-            throw RangeError(`x=${X} is not a valid point on curve`);
+            throw RangeError(`x=0x${field.toHex(X)} is not a valid point on curve`);
         }
     }
 }

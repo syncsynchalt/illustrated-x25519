@@ -335,14 +335,50 @@ keys for a secure connection.
     an x-y curve, where are the y coordinates?
 
 <p><span class="qa">A:</span>
-    The <span class="math">y</span> coordinate of each point is not needed
-    for X25519, and for simplicity it is not computed.
+    The <span class="math">y</span> coordinates for each point are not needed
+    for X25519, and for simplicity they are not computed.
     Using only the <span class="math">x</span> coordinate of also reduces key
     length, as the <span class="math">y</span> coordinate isn't added to
-    the key.</p>
+    the key.
 
-<p>Some other EC curves do make use of both
-    <span class="math">x</span> and <span class="math">y</span> coordinates.
+<p>Only half of <span class="math">x</span> values are valid on Curve25519.
+    Each <span class="math">x</span>-coordinate
+    has two values that satisfy <span class="math">&Sqrt;y<sup>2</sup></span>.
+
+<form id="form-xy">
+    <div class="calculator-title pb1">
+    Y-coordinate calculator
+    </div>
+    <table>
+        <tr>
+            <td>
+                <label for="xy-x">&nbsp;&nbsp;&nbsp;&nbsp;x:</label>
+            </td>
+            <td>
+                <input class="long text-right squish truncable" id="xy-x"
+                       type="text" data-deco="hex-ify" value="0x0">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="xy-y1">&nbsp;&nbsp;&nbsp;&nbsp;y<sub>1</sub>:</label>
+            </td>
+            <td>
+                <input class="long text-right squish truncable" id="xy-y1"
+                       type="text" value="0x0" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="xy-y2">&nbsp;&nbsp;&nbsp;&nbsp;y<sub>2</sub>:</label>
+            </td>
+            <td>
+                <input class="long text-right squish truncable" id="xy-y2"
+                       type="text" value="0x0" readonly>
+            </td>
+        </tr>
+    </table>
+</form>
 
 <p><span class="qa">Q:</span> Can you give me more details on elliptic curve
                     operations?</p>

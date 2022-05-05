@@ -104,6 +104,26 @@
         }
     }
 
+    function calcY() {
+        let y1result = document.getElementById('xy-y1');
+        let y2result = document.getElementById('xy-y2');
+        try {
+            y1result.value = 'N/A';
+            y2result.value = 'N/A';
+            let x = BigInt(document.getElementById('xy-x').value || '0x0');
+            x %= field.p;
+            let [ y1, y2 ] = curve.Y(x);
+            y1result.value = `0x${field.toHex(y1)}`;
+            y2result.value = `0x${field.toHex(y2)}`;
+        } catch (e) {
+            if (console) {
+                console.error(e);
+            }
+            y1result.value = e.message;
+            y2result.value = e.message;
+        }
+    }
+
     /**
      * @param el {HTMLInputElement} input element
      */
@@ -128,6 +148,7 @@
         document.getElementById('pubkey-clamp').onclick = addClamp;
         document.getElementById('mult-n').oninput = calcMult;
         document.getElementById('mult-point').oninput = calcMult;
+        document.getElementById('xy-x').oninput = calcY;
 
         const els = document.querySelectorAll('input[data-deco=hex-ify]');
         els.forEach((el) => {
