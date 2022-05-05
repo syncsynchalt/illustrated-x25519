@@ -317,11 +317,9 @@ keys for a secure connection.
     to apply these bit values to your secret key):
 <table class="table table-condensed table-not-full" style="margin-left: 2em;">
     <thead>
-    <tr><th>Bit</th><th>Value</th><th>Reason</th></tr>
+    <tr><th>Bits</th><th>Value</th><th>Reason</th></tr>
     </thead>
-    <tr><td>0</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
-    <tr><td>1</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
-    <tr><td>2</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
+    <tr><td>0,1,2</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
     <tr><td>254</td><td>1</td><td>Prevent a timing leak</td></tr>
     <tr><td>255</td><td>0</td><td>Constrain n < 2<sup>255</sup></td></tr>
 </table>
