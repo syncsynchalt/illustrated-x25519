@@ -136,9 +136,28 @@ function pointMult(X, n) {
 }
 
 
+/**
+ * For the given X coordinate, find Y on the curve.
+ * @param X {BigInt} X coordinate in range 0..2**255-19-1
+ * @return {BigInt[2]} the two Y coordinates for X
+ * @throw {RangeError} X is not a valid coordinate on the curve (true for half of all inputs)
+ */
+function Y(X) {
+    let YY = field.pow(X, 3n) + curveA * field.pow(X, 2n) + X;
+    try {
+        return field.sqrt(YY % field.p);
+    } catch (e) {
+        if (e instanceof RangeError) {
+            throw RangeError(`x=${X} is not a valid point on curve`);
+        }
+    }
+}
+
+
 export {
     basePointX,
     X,
+    Y,
     pointDouble,
     pointAdd1,
     pointMult

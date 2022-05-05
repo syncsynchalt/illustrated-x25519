@@ -108,4 +108,33 @@ describe('curve library', () => {
             runTest(exp, `${2**exp}P`);
         }
     });
+
+    it('should get Y coordinate from X coordinate', () => {
+        let checkValid = (x) => {
+            x = BigInt(x);
+            let msg = `x=${x}`;
+            let y = curve.Y(x);
+            if (x === 0n) {
+                expect(y[0]).to.equal(0n, msg);
+                expect(y[1]).to.equal(0n, msg);
+            } else {
+                expect(y[0]).to.not.equal(y[1], msg);
+                expect(y[0] * y[0] % field.p).to.equal(
+                    (field.pow(x, 3n) + 486662n*field.pow(x, 2n) + x) % field.p, msg);
+                expect(y[1] * y[1] % field.p).to.equal(
+                    (field.pow(x, 3n) + 486662n*field.pow(x, 2n) + x) % field.p, msg);
+            }
+        };
+        let checkInvalid = (x) => {
+            x = BigInt(x);
+            let msg = `x=${x}`;
+            expect(() => {curve.Y(x)}).to.throw(RangeError, 'not a valid point', msg);
+        };
+
+        let valid = [0, 1, 4, 6, 7, 8, 9, field.p >> 128n, field.p >> 127n];
+        let invalid = [2, 3, 5, (field.p >> 127n) + 2n, field.p-1n];
+
+        for (let x of valid) checkValid(x);
+        for (let x of invalid) checkInvalid(x);
+    });
 });
