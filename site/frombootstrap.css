@@ -41,6 +41,12 @@ img {
     border: 0;
 }
 
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .text-left {
     text-align: left;
 }

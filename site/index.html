@@ -8,9 +8,9 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="Hands-on: X25519 Key Exchange"/>
     <meta name="description" content="An explanation and demonstration of Curve25519 Key Exchange"/>
-    <link rel="stylesheet" href="frombootstrap.css?bustin=1651773467"/>
-    <link rel="stylesheet" href="x25519.css?bustin=1651773467"/>
-    <script type="module" async src="site.js?bustin=1651773467"></script>
+    <link rel="stylesheet" href="frombootstrap.css?bustin=1651981713"/>
+    <link rel="stylesheet" href="x25519.css?bustin=1651981713"/>
+    <script type="module" async src="site.js?bustin=1651981713"></script>
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://x25519.ulfheim.net/">
@@ -386,6 +386,29 @@ keys for a secure connection.
     results in a number that in modular arithmetic has a square root
     (to satisfy the
     <span class="math">y<sup>2</sup></span> side of the equation).
+
+<p><span class="qa">Q:</span> What does Curve25519 look like?</p>
+
+<p><span class="qa">A:</span> Here's what the curve looks like in real numbers,
+    (i.e. floating point numbers with standard addition and multiplication):
+<img class="cute-graph center-block"
+     src="images/curve25519-real.png"
+     alt="an elliptic curve">
+<div class="text-center">
+<p><span class="math">y<sup>2</sup> = x<sup>3</sup> + 486662x<sup>2</sup> +
+    x</span>
+</div>
+
+<p>And here's the first points of the curve when calculated in
+    𝔽<sub>p</sub> (i.e. with integers 0..2<sup>255</sup>-19 using
+    modular math):</p>
+<img class="cute-graph center-block"
+     src="images/curve25519-field.png"
+     alt="a pattern of dots, mirrored horizontally, but otherwise seemingly without pattern">
+<div class="text-center">
+<p><span class="math">y<sup>2</sup> = x<sup>3</sup> + 486662x<sup>2</sup> +
+    x</span> in 𝔽<sub>p</sub>
+</div>
 
 <p><span class="qa">Q:</span> Can you give me more
 details on elliptic curve operations?

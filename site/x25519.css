@@ -60,6 +60,15 @@ h4 {
     font-family: serif;
 }
 
+img.cute-graph {
+    margin: 30px auto 10px;
+    max-width: 70%;
+    max-height: 70%;
+    border: 1px solid #666;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    border-radius: 10px;
+}
+
 .section h3:before {
     content: "❡\00a0";
     color: #666;
@@ -252,6 +261,12 @@ table.table-not-full {
     }
     .calculator table td:first-child {
         min-width: inherit;
+    }
+    img.cute-graph {
+        max-width: 96%;
+        max-height: 96%;
+        margin-left: 2%;
+        margin-right: 2%;
     }
 }
 
