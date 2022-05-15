@@ -83,7 +83,7 @@ function pointAdd1(x, z, prevX, prevZ) {
  * @param swap {Boolean} whether to swap
  * @param a {BigInt}
  * @param b {BigInt}
- * @returns [BigInt, BigInt] the values a and b, swapped if needed.
+ * @returns {[BigInt, BigInt]} the values a and b, swapped if needed.
  */
 let cswap = (swap, a, b) => {
     return swap ? [b, a] : [a, b];
