@@ -7,4 +7,8 @@ site-prep:
 test:
 	cd js && npm test
 
+dist:
+	@if [[ -z "${site}" ]]; then echo "Must set \$$site"; exit 1; fi
+	rsync -avh site/ ${site}
+
 .PHONY: site-prep test
