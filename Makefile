@@ -8,7 +8,7 @@ test:
 	cd js && npm test
 
 dist:
-	@if [[ -z "${site}" ]]; then echo "Must set \$$site"; exit 1; fi
-	rsync -avh site/ ${site}
+	@if [[ -z "${DISTROOT}" ]]; then echo "Must set \$$DISTROOT variable"; exit 1; fi
+	rsync -avh site/ ${DISTROOT}/x25519/
 
 .PHONY: site-prep test
