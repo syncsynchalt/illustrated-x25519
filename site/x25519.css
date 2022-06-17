@@ -78,6 +78,7 @@ img.cute-graph {
 }
 
 .section {
+    color: #111;
     font-size: 14px;
     margin: 1.5em auto;
     background-color: linen;
@@ -131,11 +132,11 @@ img.cute-graph {
     text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
     padding: 3px 11px 4px;
-    text-shadow: 1px 1px 1px rgba(255,255,255,.4);
+    text-shadow: 1px 1px 1px rgba(255,255,255,.3);
     border-radius: 7px;
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 
-    color: #333;
+    color: #111;
     border: solid 1px #c5a884;
     background: bisque;
     background: linear-gradient(180deg, #f8e8d5 1%, #f5ddc3 100%);
@@ -214,7 +215,7 @@ table.table-not-full {
     padding: 2px;
     border-bottom: 1px solid grey;
     background-color: bisque;
-    color: #333;
+    color: #444;
     line-height: 20px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
@@ -222,7 +223,7 @@ table.table-not-full {
 }
 .header a, .header a:visited, .header a:hover {
     text-decoration: none;
-    color: #555;
+    color: #444;
 }
 .header a.this-page:before {
     content: "❧\00a0";
