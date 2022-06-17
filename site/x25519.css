@@ -4,7 +4,6 @@ body {
 
 .math {
     font-family: "Times New Roman", serif;
-    /*font-family: "Courier", monospace;*/
     font-style: oblique;
 }
 input.long {
@@ -81,11 +80,11 @@ img.cute-graph {
 .section {
     font-size: 14px;
     margin: 1.5em auto;
-    background-color: #D8EDCF;
+    background-color: linen;
     padding: 1em;
     border-radius: 1em;
     border: 2px solid transparent;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
     max-width: 800px;
 }
 
@@ -104,10 +103,10 @@ img.cute-graph {
     margin: 1em auto;
     padding: 1em;
     font-size: 14px;
-    background-color: #FAF7DC;
-    border: 2px solid #e0d998;
+    background-color: antiquewhite;
+    border: 2px solid #b6a083;
     border-radius: 1em;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .calculator .calculator-title {
@@ -137,13 +136,13 @@ img.cute-graph {
     box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 
     color: #333;
-    border: solid 1px #eac88a;
-    background: #f2dcb5;
-    background: linear-gradient(180deg, #f9efdc 1%, #f6e6cb 100%);
+    border: solid 1px #c5a884;
+    background: bisque;
+    background: linear-gradient(180deg, #f8e8d5 1%, #f5ddc3 100%);
 }
 .calculator button:hover {
-    background: #f5e4c7;
-    background: linear-gradient(180deg, #fbf5e9 1%, #f5e4c7 100%);
+    background: bisque;
+    background: linear-gradient(180deg, #f5ddc3 1%, #f8e8d5 100%);
 }
 .calculator button:active {
     position: relative;
@@ -171,9 +170,9 @@ table.table-not-full {
     text-align: center;
     min-width: 1.4em;
     color: #444;
-    background-color: #f6e6cb;
+    background-color: #f8e8d5;
     border-radius: 10px;
-    border: #eac88a 1px solid;
+    border: #c5a884 1px solid;
     user-select: none;
     cursor: help;
 }
@@ -214,7 +213,7 @@ table.table-not-full {
     margin: 0;
     padding: 2px;
     border-bottom: 1px solid grey;
-    background-color: #FFEFD5;
+    background-color: bisque;
     color: #555;
     line-height: 20px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
