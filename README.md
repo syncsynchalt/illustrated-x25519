@@ -1,6 +1,6 @@
 # X25519 Key Exchange
 
-Published at https://x25519.ulfheim.net
+Published at https://x25519.xargs.org
 
 - `site/`: page source for the finished product
 - `js/`: javascript (not site-specific)
