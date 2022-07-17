@@ -1,3 +1,7 @@
+:root {
+    --server-bg: hsl(190, 60%, 80%);
+}
+
 body {
     font-size: 15px;
 }
@@ -22,10 +26,6 @@ input:read-only {
 }
 .float-right {
     float: right;
-}
-
-.tt {
-    font-family: "Monaco", "Courier", monospace;
 }
 
 .squish {
@@ -81,7 +81,7 @@ img.cute-graph {
     color: #111;
     font-size: 14px;
     margin: 1.5em auto;
-    background-color: linen;
+    background-color: var(--server-bg);
     padding: 1em;
     border-radius: 1em;
     border: 2px solid transparent;
@@ -159,6 +159,10 @@ table.table-not-full {
 
 .diagram {
     padding: 1em;
+}
+
+xtt {
+    font-family: monospace;
 }
 
 /***** tooltip *****/
