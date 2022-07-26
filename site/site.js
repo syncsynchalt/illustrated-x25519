@@ -94,7 +94,7 @@
             if (!n || !point) {
                 return;
             }
-            n %= 255n;
+            n %= 2n**255n;
             point %= field.p;
             let { x, z } = curve.pointMult(point, n);
             let X = curve.X(x, z);
