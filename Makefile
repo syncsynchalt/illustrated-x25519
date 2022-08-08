@@ -9,6 +9,6 @@ test:
 
 dist:
 	@if [[ -z "${DISTROOT}" ]]; then echo "Must set \$$DISTROOT variable"; exit 1; fi
-	rsync -avh site/ ${DISTROOT}/x25519/
+	rsync -rlpvhc site/ ${DISTROOT}/x25519/
 
 .PHONY: site-prep test
