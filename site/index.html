@@ -165,7 +165,7 @@ keys for a secure connection.
 <div>Multiplicative inverse:
 <span class="math">7&lowast;7<sup>-1</sup>mod23 = 1
     <br>&rarr; 7&lowast;10mod23=1; 7<sup>-1</sup> = 10</span></div>
-<div>Division: <span class="math">4/7 &rarr; 4&lowast;7<sup>1</sup>mod23
+<div>Division: <span class="math">4/7 &rarr; 4&lowast;7<sup>-1</sup>mod23
     <br>&rarr; 4&lowast;10mod23 = 17</span></div>
 </div>
 </div>
@@ -330,7 +330,7 @@ keys for a secure connection.
 <p><span class="qa">A:</span>
     The <span class="math">y</span> coordinates for each point are not needed
     for X25519, and for simplicity they are not computed.
-    Using only the <span class="math">x</span> coordinate of also reduces
+    Using only the <span class="math">x</span> coordinate also reduces
     public key length, as the <span class="math">y</span> coordinate isn't part of
     the key.
 
