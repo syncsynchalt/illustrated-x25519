@@ -73,12 +73,12 @@
     <tr>
         <td class="text-right"><span class="math">k<sub>a</sub></span></td>
         <td>&nbsp;:&nbsp;&nbsp;</td>
-        <td>Alice's secret key - a 255-bit (~32-byte) random number</td>
+        <td>Alice's secret key - a 256-bit (32-byte) random number</td>
     </tr>
     <tr>
         <td class="text-right"><span class="math">k<sub>b</sub></span></td>
         <td>&nbsp;:&nbsp;&nbsp;</td>
-        <td>Bob's secret key - a 255-bit (~32-byte) random number</td>
+        <td>Bob's secret key - a 256-bit (32-byte) random number</td>
     </tr>
     <tr>
         <td class="text-right"><span class="math">P</span></td>
@@ -299,25 +299,36 @@ keys for a secure connection.
 
 <div class="section">
 <h3>Odds and ends</h3>
+<p><span class="qa">Q:</span> What is the key strength of X25519?</p>
+
+<p><span class="qa">A:</span> The key size of X25519 is 256 bits (32 bytes),
+    but five of those bits are "clamped" to fixed values to address
+    various security concerns:
+
+    <table class="table table-condensed table-not-full" style="margin-left: 2em;">
+        <thead>
+        <tr><th>Bits</th><th>Value</th><th>Reason</th></tr>
+        </thead>
+        <tr><td>0,1,2</td><td>0</td><td>Protect against small-subgroup attacks, which
+        would allow one peer to use a manipulated secret key to discover the other peer's secret
+        key</td></tr>
+        <tr><td>254</td><td>1</td><td>Prevent implementors from skipping a multiplication
+        round for smaller keys, which would expose a timing leak</td></tr>
+        <tr><td>255</td><td>0</td><td>Constrain n < 2<sup>255</sup>, which prevents the
+        algorithm from reaching the "infinity" result for base-point x=9</td></tr>
+    </table>
+
+    This makes a key with strength 251 bits. For further details,
+    see section 4.7 ("Clamping") in <a
+        href="https://martin.kleppmann.com/papers/curve25519.pdf"
+>Implementing Curve25519/X25519</a> by Martin Kleppmann.
+
 <p><span class="qa">Q:</span> Why can't I reproduce
     these results in <xtt>openssl</xtt> or other tools?
 
-<p><span class="qa">A:</span> Private keys used in actual Curve25519
-    are modified slightly to avoid particular attacks
-    (see section 4.7 "Clamping" in <a
-            href="https://martin.kleppmann.com/papers/curve25519.pdf"
-    >Implementing Curve25519/X25519</a> by Martin Kleppmann).
-    In particular the following five bits are clamped to
-    pre-determined values in real implementations (click the "Clamp" button
-    to apply these bit values to your secret key):
-<table class="table table-condensed table-not-full" style="margin-left: 2em;">
-    <thead>
-    <tr><th>Bits</th><th>Value</th><th>Reason</th></tr>
-    </thead>
-    <tr><td>0,1,2</td><td>0</td><td>Protect against small-subgroup attacks</td></tr>
-    <tr><td>254</td><td>1</td><td>Prevent a timing leak</td></tr>
-    <tr><td>255</td><td>0</td><td>Constrain n < 2<sup>255</sup></td></tr>
-</table>
+<p><span class="qa">A:</span> Private keys used in actual X25519 exchanges are
+    modified slightly (see "Clamping" above), and you'll need to set/clear the
+    same five bits yourself on any keys that you use for key exchange.
 
 <p>You may still find that your output does not match
     because X25519 keys are stored and transmitted in little-endian
